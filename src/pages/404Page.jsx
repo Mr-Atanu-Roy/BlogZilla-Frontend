@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function PageNotFound() {
   return (
-    <div class=" h-screen justify-center">
+    <section class="justify-center">
       <center class="mt-24 m-auto">
         <svg
           class="emoji-404 "
@@ -113,7 +113,7 @@ function PageNotFound() {
           </span>
         </Link>
       </center>
-    </div>
+    </section>
   );
 }
 
