@@ -47,7 +47,7 @@ function Signup() {
         const response = await authService.createAccount(data)
         
         //handel success response
-        if(response.status == 201 && response.data?.error == null){
+        if(response.status == 201 && response.error == null){
           toast({ variant: "success", title: "Account created successfully. Please check your email to verify your account.".toUpperCase(),})
         }else if(response.status == 400 && response.data?.error){
           const responseErrors = useAPIErrors(response.data.error) //get the errors in array format
@@ -59,26 +59,28 @@ function Signup() {
         }
       } catch (error) {
         toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
+      }finally{
+        setLoading(false)
       }
-      setLoading(false)
+      
     }
 
 
   return (
     <form onSubmit={handleSubmit(signup, handelSignupFormError)} className='px-16'>
         <div className="w-full">
-                <Label htmlFor="email_signup" className="text-center block font-normal capitalize">Email</Label>
-                <Input type="email" id="email_signup" className="mx-auto text-center mt-1 mb-10 text-base"
-                  {...register("signup_email", {required: true, pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/})}
-                />
+            <Label htmlFor="signup_email" className="text-center block font-normal capitalize">Email</Label>
+            <Input type="email" id="signup_email" className="mx-auto text-center mt-1 mb-10 text-base"
+              {...register("signup_email", {required: true, pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/})}
+            />
 
-                <Label htmlFor="password_signup" className="text-center block font-normal capitalize">password</Label>
-                <Input type={passType} id="password_signup" className="mx-auto text-center mt-1 text-base"
-                  {...register("signup_password", {required: true, minLength:3, maxLength: 25, })}
-                />
-                {
-                    passType=="password" ? <Eye onClick={()=>setPassType("text")} className="relative -top-8 left-[90%] cursor-pointer"/> : <EyeOff onClick={()=>setPassType("password")} className="relative -top-8 left-[90%] cursor-pointer"  />
-                }
+            <Label htmlFor="signup_password" className="text-center block font-normal capitalize">password</Label>
+            <Input type={passType} id="signup_password" className="mx-auto text-center mt-1 text-base"
+              {...register("signup_password", {required: true, minLength:3, maxLength: 25, })}
+            />
+            {
+                passType=="password" ? <Eye onClick={()=>setPassType("text")} className="relative -top-8 left-[90%] cursor-pointer"/> : <EyeOff onClick={()=>setPassType("password")} className="relative -top-8 left-[90%] cursor-pointer"  />
+            }
         </div>  
 
         <div className="mt-10 text-center px-6">

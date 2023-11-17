@@ -26,6 +26,22 @@ class AuthService{
         }
     }
 
+    async sendEmailVerificationLink({email}) {
+        try {
+            const response = await this.client.get(
+                "email-verify/",
+                {
+                    params: {email}
+                }
+            );
+            return response.data;
+            
+        } catch (error) {
+            console.log("AUTH SERVICE :: SEND EMAIL VERIFICATION LINK ERROR :: ", error.message )
+            return error.response;
+        }
+    }
+
     async verifyEmail({uuid, token}) {
         try {
             const response = await this.client.post(
@@ -39,7 +55,7 @@ class AuthService{
             
         } catch (error) {
             console.log("AUTH SERVICE :: VERIFY EMAIL ERROR :: ", error.message )
-            throw error;
+            return error.response;
         }
     }
     
@@ -56,7 +72,7 @@ class AuthService{
             
         } catch (error) {
             console.log("AUTH SERVICE :: SEND PASSWORD RECOVERY LINK ERROR :: ", error.message )
-            throw error;
+            return error.response;
         }
         
     }
@@ -75,7 +91,7 @@ class AuthService{
             
         } catch (error) {
             console.log("AUTH SERVICE :: RESET PASSWORD ERROR :: ", error.message )
-            throw error;
+            return error.response;
         }
     }
 
@@ -108,7 +124,7 @@ class AuthService{
             
         } catch (error) {
             console.log("AUTH SERVICE :: GET TOKEN ERROR :: ", error.message )
-            throw error;
+            return error.response;
         }
     }
 

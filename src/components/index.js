@@ -5,6 +5,7 @@ import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
 import HeaderPopover from "./Header/HeaderPopover";
 import Logo from "./Logo";
+import AuthBase from "./Auth/AuthBase";
 
 export {
     Logo,
@@ -13,5 +14,6 @@ export {
     ModalLoginForm,
     Header,
     Footer,
-    HeaderPopover
+    HeaderPopover,
+    AuthBase,
 }

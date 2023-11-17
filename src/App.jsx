@@ -1,5 +1,5 @@
 import {Header, Footer} from "./components/index"
-import { Toaster } from "@/components/ui/toaster"
+
 import { Outlet } from "react-router-dom"
 
 function App() {
@@ -11,7 +11,6 @@ function App() {
       <Outlet />
       </main>
     <Footer />
-    <Toaster />
     </>
   )
 }

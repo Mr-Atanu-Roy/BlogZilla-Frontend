@@ -44,7 +44,7 @@ function Login() {
             }
             
             const response = await authService.login(data)
-            if(response.status == 200 && response.data?.error == null){
+            if(response.status == 200 && response.error == null){
                 toast({ variant: "success", title: "Logged In Successfully".toUpperCase(),})
                 const token = response.data //obj of refresh and access tokens
                 //TODO: change username
@@ -62,8 +62,9 @@ function Login() {
             }
         } catch (error) {
             toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
+        }finally{
+            setLoading(false)
         }
-        setLoading(false)
     }
 
   return (
@@ -84,7 +85,7 @@ function Login() {
         </div>  
 
         <p className="text-right text-sm font-medium cursor-pointer hover:text-primary duration-200 transition-colors ease-in-out">
-            <Link to="/forgot-password">Forgot password?</Link>
+            <Link to="/auth/reset-password">Forgot password?</Link>
         </p>
 
         <div className="mt-10 text-center px-6">
