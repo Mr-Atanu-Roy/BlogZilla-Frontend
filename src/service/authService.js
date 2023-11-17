@@ -20,10 +20,9 @@ class AuthService{
                 }
             );
             return response.data;
-            
         } catch (error) {
-            console.log("AUTH SERVICE :: CREATE ACCOUNT ERROR :: ", error.message )
-            throw error;
+            console.log("AUTH SERVICE :: CREATE ACCOUNT ERROR :: ", error.message)
+            return error.response;
         }
     }
 
@@ -93,7 +92,7 @@ class AuthService{
             
         } catch (error) {
             console.log("AUTH SERVICE :: LOGIN ERROR :: ", error.message )
-            throw error;
+            return error.response;
         }
     }
 

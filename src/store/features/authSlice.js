@@ -16,9 +16,7 @@ initialState = {
 
 const initialState = {
     status: false,
-    userData: {
-        "name": "John Doe",
-    },
+    userData: null
 }
 
 

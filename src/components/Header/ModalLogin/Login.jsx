@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import {useDispatch} from 'react-redux'
 import {useForm} from 'react-hook-form'
+import {useAPIErrors} from '../../../hooks/index'
+import {authService} from '../../../service/index'
+import {login as authLogin} from '../../../store/features/authSlice'
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,8 +17,11 @@ function Login() {
 
     const [passType, setPassType] = useState("password")
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const {toast} = useToast()
     const {register, handleSubmit} = useForm()
+
+    const [loading, setLoading] = useState(false)
 
     const handelLoginFormError = (errors) => {
         if(errors.login_email?.type == "required" && errors.login_password?.type == "required"){
@@ -28,14 +35,35 @@ function Login() {
         if(errors.login_email?.type == "pattern") toast({ variant: "destructive", title: 'Email is invalid',})
     }
 
-    
     const login =  async(data) => {
-        //TODO: handel login logic
-        data = {
-            email: data.login_email,
-            password: data.login_password
+        setLoading(true)
+        try {
+            data = {
+                email: data.login_email,
+                password: data.login_password
+            }
+            
+            const response = await authService.login(data)
+            if(response.status == 200 && response.data?.error == null){
+                toast({ variant: "success", title: "Logged In Successfully".toUpperCase(),})
+                const token = response.data //obj of refresh and access tokens
+                //TODO: change username
+                if(token) dispatch(authLogin({name: "Welcome", token})) //save user data to redux store
+                setTimeout(() => {
+                    navigate("/dashboard")
+                }, 1600);
+            }else if(response.status == 400 && response.data?.error){
+                const responseErrors = useAPIErrors(response.data.error) //get the errors in array format
+                for (let index = 0; index < responseErrors.length; index++) {
+                    toast({ variant: "destructive", title: responseErrors[index].toUpperCase(),})
+                }
+            }else{
+                toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
+            }
+        } catch (error) {
+            toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
         }
-        console.log(data)
+        setLoading(false)
     }
 
   return (
@@ -56,12 +84,18 @@ function Login() {
         </div>  
 
         <p className="text-right text-sm font-medium cursor-pointer hover:text-primary duration-200 transition-colors ease-in-out">
-            {/* TODO: add react-router-dom link */}
-            Forgot password?
+            <Link to="/forgot-password">Forgot password?</Link>
         </p>
 
         <div className="mt-10 text-center px-6">
-            <Button type="submit" className="w-full">Login <MoveRight className="ml-1.5 mt-1" /></Button>
+            <Button type="submit" className={`w-full ${loading ? 'cursor-not-allowed' : null}`} disabled={loading}>
+                {
+                  loading ? <><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg> Processing</> : <>Login <MoveRight className="ml-1.5 mt-1" /></>
+                }
+            </Button>
         </div>
     </form>
   )

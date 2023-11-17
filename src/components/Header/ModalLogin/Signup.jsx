@@ -1,6 +1,7 @@
-import {useState, useEffect} from 'react'
-import {useDispatch} from 'react-redux'
+import {useState} from 'react'
 import {useForm} from 'react-hook-form'
+import {useAPIErrors} from '../../../hooks/index'
+import {authService} from '../../../service/index'
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,12 +12,14 @@ import { MoveRight, Eye, EyeOff } from "lucide-react"
 
 function Signup() {
   const [passType, setPassType] = useState("password")
-  const dispatch = useDispatch()
   const {toast} = useToast()
   const {register, handleSubmit} = useForm()
-  
 
+  const [loading, setLoading] = useState(false)
+  
     const handelSignupFormError = (errors) => {
+      setLoading(true)
+      
       if(errors.signup_email?.type == "required" && errors.signup_password?.type == "required"){
         toast({ variant: "destructive", title: 'Email and Password are required',})
       }else if(errors.signup_email?.type == "required"){
@@ -28,20 +31,36 @@ function Signup() {
       if(errors.signup_email?.type == "pattern") toast({ variant: "destructive", title: 'Email is invalid',})
       if(errors.signup_password?.type == "minLength") toast({ variant: "destructive", title: 'Password must be at least 3 characters.',})
       if(errors.signup_password?.type == "maxLength") toast({ variant: "destructive", title: 'Password must be at most 25 characters.',})
+
+      setLoading(false)
     }
 
 
     const signup =  async(data) => {
+      setLoading(true)
       try {
-        //TODO: handel login logic
         data = {
             email: data.signup_email,
             password: data.signup_password
         }
-        console.log(data)
-      } catch (error) {
+
+        const response = await authService.createAccount(data)
         
+        //handel success response
+        if(response.status == 201 && response.data?.error == null){
+          toast({ variant: "success", title: "Account created successfully. Please check your email to verify your account.".toUpperCase(),})
+        }else if(response.status == 400 && response.data?.error){
+          const responseErrors = useAPIErrors(response.data.error) //get the errors in array format
+          for (let index = 0; index < responseErrors.length; index++) {
+            toast({ variant: "destructive", title: responseErrors[index].toUpperCase(),})
+          }
+        }else{
+          toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
+        }
+      } catch (error) {
+        toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
       }
+      setLoading(false)
     }
 
 
@@ -63,10 +82,19 @@ function Signup() {
         </div>  
 
         <div className="mt-10 text-center px-6">
-            <Button type="submit" className="w-full">Signup <MoveRight className="ml-1.5 mt-1" /></Button>
+            <Button type="submit" className={`w-full ${loading ? 'cursor-not-allowed' : null}`} disabled={loading}>
+                {
+                  loading ? <><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg> Processing</> : <>Signup <MoveRight className="ml-1.5 mt-1" /></>
+                }
+                
+            </Button>
         </div>
     </form>
   )
 }
 
 export default Signup
+

@@ -6,6 +6,7 @@ module.exports = {
     './components/**/*.{js,jsx}',
     './app/**/*.{js,jsx}',
     './src/**/*.{js,jsx}',
+    './src/components/ui/*.jsx'
 	],
   theme: {
     container: {
@@ -33,6 +34,10 @@ module.exports = {
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
+        },
+        success: {
+          DEFAULT: "#16A34A",
+          foreground: "#09953d",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
