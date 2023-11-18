@@ -36,11 +36,9 @@ function Header() {
       </Link>
       <div className="flex">
         {navLinks.map((component) => (
-          <Link to={component.link}> 
-            <span className="block select-none font-medium space-y-1 rounded-md p-3 mx-1 cursor-pointer leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground" key={component.title}>
+            <Link to={component.link} className="block select-none font-medium space-y-1 rounded-md p-3 mx-1 cursor-pointer leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground" key={component.title}>
               {component.title}
-            </span>
-          </Link>
+            </Link>
         ))}
       </div>
       <div className="mr-1" >

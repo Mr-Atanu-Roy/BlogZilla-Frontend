@@ -36,9 +36,7 @@ function Footer() {
                 <div class="flex flex-wrap justify-center mt-6 -mx-4">
                     
                     {footerItems.map((component) => (
-                      <Link to={component.link}> 
-                        <span  key={component.title} class="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-primary dark:text-gray-300 dark:hover:text-primary"> {component.title} </span>
-                      </Link>
+                        <Link to={component.link} key={component.title} class="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-primary dark:text-gray-300 dark:hover:text-primary"> {component.title} </Link>
                     ))}
                 </div>
 
