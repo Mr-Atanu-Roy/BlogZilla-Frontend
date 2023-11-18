@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
@@ -14,12 +14,15 @@ function WriteBlogsForm() {
   const {toast} = useToast()
   const [loading, setLoading] = useState(false)
 
-  const { register, handleSubmit, control, setValue, getValues } = useForm({
+  const { register, watch, handleSubmit, control, setValue, getValues } = useForm({
     defaultValues: {
       tags: [],
-      publish_switch: true,
+      publish: true,
     },
   });
+
+  //watch the tags
+  const watchTags = watch('tags')
 
   const handelError = (errors) => {
     console.log(getValues())
@@ -38,7 +41,7 @@ function WriteBlogsForm() {
   } 
 
   const saveAsDraft = async(data) => {
-    data = {...data, publish_switch: false}
+    data = {...data, publish: false}
   }
 
 
@@ -92,7 +95,7 @@ function WriteBlogsForm() {
               
               <div className='flex flex-wrap mt-2.5 w-[350px]'>
                 {
-                  getValues().tags.length > 0 ? getValues().tags.map((tag, index) => (
+                  watchTags.length > 0 ? watchTags.map((tag, index) => (
                     <div key={index+tag} className='text-sm m-1 items-center justify-center font-medium flex w-fit bg-green-400 rounded-full px-3 py-1.5'>
                       <span>{tag}</span> 
                       <span><X className='w-4 h-4 ml-1 cursor-pointer' onClick={() => removeTag(index)}/></span>
