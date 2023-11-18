@@ -54,7 +54,7 @@ function ResetPassword() {
     const title = 'Reset Your Password'
     const description = 'Enter your email address and we will send you a link to reset your password.'
     const content = (
-        <form onClick={handleSubmit(resetPassSubmitForm, handelResetPassFormError)} className='px-14'>
+        <form onSubmit={handleSubmit(resetPassSubmitForm, handelResetPassFormError)} className='px-14'>
             <Label htmlFor="forgot_pass_email" className="text-center block font-normal capitalize">Email</Label>
             <Input type="email" id="forgot_pass_email" className="mx-auto text-center mt-1 mb-3 text-base"
             {...register("forgot_pass_email", {required: true, pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/})}/>

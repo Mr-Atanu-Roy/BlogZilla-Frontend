@@ -50,7 +50,7 @@ function EmailVerify() {
     const title = 'Verify Your Email'
     const description = 'Enter your email address and we will send you a link to verify your email.'
     const content = (
-        <form onClick={handleSubmit(verifyEmailSubmitForm, handelEmailVerifyFormError)} className='px-14'>
+        <form onSubmit={handleSubmit(verifyEmailSubmitForm, handelEmailVerifyFormError)} className='px-14'>
             <Label htmlFor="verify_email" className="text-center block font-normal capitalize">Email</Label>
             <Input type="email" id="verify_email" className="mx-auto text-center mt-1 mb-3 text-base"
             {...register("verify_email", {required: true, pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/})}/>

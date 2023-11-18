@@ -57,7 +57,7 @@ function ResetPasswordRedirect() {
     const title = 'Enter New Password'
     const description = 'Enter a new password and we will reset it if the link is valid.'
     const content = (
-        <form onClick={handleSubmit(resetPassRedirectSubmitForm, handelResetPassRedirectFormError)} className='px-14'>
+        <form onSubmit={handleSubmit(resetPassRedirectSubmitForm, handelResetPassRedirectFormError)} className='px-14'>
             <Label htmlFor="new_password" className="text-center block font-normal capitalize">New Password</Label>
             <Input type="text" id="new_password" className={`mx-auto text-center mt-1 mb-3 text-base ${submitted ? 'cursor-not-allowed' : ''}`}
             {...register("new_password", {required: true})} disabled={submitted}/>
