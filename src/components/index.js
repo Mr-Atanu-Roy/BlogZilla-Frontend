@@ -7,6 +7,8 @@ import HeaderPopover from "./Header/HeaderPopover";
 import Logo from "./Logo";
 import AuthBase from "./Auth/AuthBase";
 import SearchBar from "./Header/SearchBar";
+import WriteBlogsForm from "./Blog/WriteBlogsForm";
+import TextEditor from "./Blog/TextEditor";
 
 export {
     Logo,
@@ -18,4 +20,7 @@ export {
     HeaderPopover,
     AuthBase,
     SearchBar,
+    WriteBlogsForm,
+    TextEditor,
+    
 }

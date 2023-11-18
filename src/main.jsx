@@ -11,6 +11,8 @@ import App from './App'
 import AuthApp from './AuthApp'
 import {
   Home,
+  Dashboard,
+  WriteBlogs,
   PageNotFound,
   ResetPassword, ResetPasswordRedirect,
   EmailVerify, EmailVerifyRedirect
@@ -26,6 +28,20 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <Home />,
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "post/",
+        errorElement: <PageNotFound />,
+        children: [
+          {
+            path: "write",
+            element: <WriteBlogs />,
+          },
+        ]
       },
       
     ],
