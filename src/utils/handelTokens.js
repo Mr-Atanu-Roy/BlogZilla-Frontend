@@ -1,4 +1,4 @@
-//saves token to local storage
+//saves refresh token to local storage
 function saveToken(token){
     if(token){
         localStorage.setItem("BlogZilla-tokens", JSON.stringify(token));

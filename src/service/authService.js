@@ -120,7 +120,7 @@ class AuthService{
                     refresh
                 }
             );
-            return response.data;
+            return {...response.data, status: response.status};
             
         } catch (error) {
             console.log("AUTH SERVICE :: GET TOKEN ERROR :: ", error.message )
