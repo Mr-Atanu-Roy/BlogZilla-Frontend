@@ -6,6 +6,7 @@ import Footer from "./Footer/Footer";
 import HeaderPopover from "./Header/HeaderPopover";
 import Logo from "./Logo";
 import AuthBase from "./Auth/AuthBase";
+import SearchBar from "./Header/SearchBar";
 
 export {
     Logo,
@@ -16,4 +17,5 @@ export {
     Footer,
     HeaderPopover,
     AuthBase,
+    SearchBar,
 }
