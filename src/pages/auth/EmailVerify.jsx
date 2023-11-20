@@ -13,6 +13,7 @@ import { MoveRight } from "lucide-react"
 
 
 function EmailVerify() {
+    const [emailSent, setEmailSent] = useState(false)
     const [loading, setLoading] = useState(false)
     const {toast} = useToast()
     const {register, handleSubmit} = useForm()
@@ -30,6 +31,7 @@ function EmailVerify() {
         try {            
             const response = await authService.sendEmailVerificationLink({email: data.verify_email})
             if(response.status == 200 && response.data?.error == null){
+                setEmailSent(true)
                 toast({ variant: "success", title: response.message.toUpperCase(),})
             }else if(response.status == 400 && response.data?.error){
                 const responseErrors = useAPIErrors(response.data.error) //get the errors in array format
@@ -57,7 +59,7 @@ function EmailVerify() {
 
            
             <div className="mt-10 text-center px-6">
-                <Button type="submit" className={`w-full ${loading ? 'cursor-not-allowed' : null}`} disabled={loading}>
+                <Button type="submit" className={`w-full ${loading ? 'cursor-not-allowed' : null}`} disabled={loading || emailSent}>
                     {
                     loading ? <><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

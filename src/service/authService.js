@@ -104,7 +104,7 @@ class AuthService{
                     password
                 }
             );
-            return response.data;
+            return {...response.data, status: response.status};
             
         } catch (error) {
             console.log("AUTH SERVICE :: LOGIN ERROR :: ", error.message )
@@ -115,7 +115,7 @@ class AuthService{
     async getToken({refresh}){
         try {
             const response = await this.client.post(
-                "token/refresh/",
+                "token/",
                 {
                     refresh
                 }

@@ -12,6 +12,7 @@ import AuthApp from './AuthApp'
 import {
   Home,
   Dashboard,
+  ListBlogs,
   WriteBlogs,
   PageNotFound,
   ResetPassword, ResetPasswordRedirect,
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
           {
             path: "write",
             element: <WriteBlogs />,
+          },
+          {
+            path: "latest",
+            element: <ListBlogs type="latest" />,
           },
         ]
       },

@@ -32,7 +32,6 @@ function EmailVerifyRedirect() {
                     setSuccess(true)
                 }else if(response.status == 400 && response.data?.error){
                     const responseErrors = useAPIErrors(response.data.error) //get the errors in array format
-                    console.log(responseErrors)
                     let error = ""
                     for (let index = 0; index < responseErrors.length; index++) {
                         error += responseErrors[index]+" "

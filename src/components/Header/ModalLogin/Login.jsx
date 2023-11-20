@@ -16,6 +16,7 @@ import { MoveRight, Eye, EyeOff} from "lucide-react"
 function Login() {
 
     const [passType, setPassType] = useState("password")
+    const  [emailVerified, setEmailVerified] = useState(true)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const {toast} = useToast()
@@ -37,6 +38,7 @@ function Login() {
 
     const login =  async(data) => {
         setLoading(true)
+        setEmailVerified(true)
         try {
             data = {
                 email: data.login_email,
@@ -44,17 +46,26 @@ function Login() {
             }
             
             const response = await authService.login(data)
-            if(response.status == 200 && response.error == null){
+            if(response.status == 200){
                 toast({ variant: "success", title: "Logged In Successfully".toUpperCase(),})
-                const token = response.data //obj of refresh and access tokens
-                //TODO: change username
-                if(token) dispatch(authLogin({name: "Welcome", token})) //save user data to redux store
+                const token = {
+                    access: response.access,
+                    refresh: response.refresh
+                } //obj of refresh and access tokens
+
+                if(token) dispatch(authLogin(token)) //save user data to redux store
                 setTimeout(() => {
                     navigate("/dashboard")
                 }, 1600);
-            }else if(response.status == 400 && response.data?.error){
-                const responseErrors = useAPIErrors(response.data.error) //get the errors in array format
+            }else if(response.status == 401 && response.data?.detail){
+                const responseErrors = useAPIErrors(response.data.detail) //get the errors in array format
                 for (let index = 0; index < responseErrors.length; index++) {
+                    toast({ variant: "destructive", title: responseErrors[index].toUpperCase(),})
+                }
+            }else if(response.status == 400 && response.data){
+                const responseErrors = useAPIErrors(response.data) //get the errors in array format
+                for (let index = 0; index < responseErrors.length; index++) {
+                    if(responseErrors[index].toLowerCase() == "email is not verified.".toLowerCase()) setEmailVerified(false)
                     toast({ variant: "destructive", title: responseErrors[index].toUpperCase(),})
                 }
             }else{
@@ -83,10 +94,19 @@ function Login() {
                 passType=="password" ? <Eye onClick={()=>setPassType("text")} className="relative -top-8 left-[90%] cursor-pointer"/> : <EyeOff onClick={()=>setPassType("password")} className="relative -top-8 left-[90%] cursor-pointer"  />
             }
         </div>  
+        
+        <div className='flex items-center justify-between'>
+            <p className="text-right text-sm font-medium cursor-pointer hover:text-primary duration-200 transition-colors ease-in-out">
+                <Link to="/auth/reset-password">Forgot password?</Link>
+            </p>
 
-        <p className="text-right text-sm font-medium cursor-pointer hover:text-primary duration-200 transition-colors ease-in-out">
-            <Link to="/auth/reset-password">Forgot password?</Link>
-        </p>
+            {
+                !emailVerified &&
+                <p className="text-right text-sm font-medium cursor-pointer hover:text-primary duration-200 transition-colors ease-in-out">
+                    <Link to="/auth/verify-email" className='flex'>Verify Email <MoveRight className="w-5 h-5 ml-1" /></Link>
+                </p>
+            }
+        </div>
 
         <div className="mt-10 text-center px-6">
             <Button type="submit" className={`w-full ${loading ? 'cursor-not-allowed' : null}`} disabled={loading}>

@@ -29,7 +29,7 @@ function ModalLoginForm() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="h-12">
+        <Button className="h-12" onClick={()=>setFormType("login")}>
             Get Started <ArrowRightCircle className="ml-1.5 h-5 w-5" />
         </Button>
       </DialogTrigger>

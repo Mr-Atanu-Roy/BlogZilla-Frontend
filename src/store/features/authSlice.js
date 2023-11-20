@@ -6,9 +6,11 @@ import {saveToken, getToken, deleteToken} from '../../utils/handelTokens'
 initialState = {
     status: false,
     userData: {
+        uuid: "sdfsd-sdfsd-awe87sdfsd"
         name: "John Doe",
-        tokens: {
+        token: {
             "refresh": ""
+            "access": ""
         }
     }
 }
@@ -27,10 +29,12 @@ const authSlice = createSlice({
         login: (state, action)=>{
             //saving token to store
             state.status = true;
-            state.userData = action.payload;
+            state.userData = {token: action.payload}
+
+            // TODO: parse the access token and save the user data
 
             //saving token to local storage
-            saveToken(action.payload.token.refresh)
+            saveToken(action.payload)
         },
         logout: (state)=>{
             //deleting token from store

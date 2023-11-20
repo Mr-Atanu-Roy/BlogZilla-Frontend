@@ -23,14 +23,22 @@ function App() {
       try {
         if(authStatus) return; //if user is already logged in return
 
-        const refreshToken = getToken();
-        if (!refreshToken) return;
+        const token = getToken();
+        if (!token) return;
 
-        const response = await authService.getToken({refresh: refreshToken})
-        if(response.status != 200) return;
+        const response = await authService.getToken({refresh: token.refresh})
+        if(response.status != 200){
+          dispatch(authLogout())
+          return;
+        };
+
         //update store after token is obtained
-        //TODO: update username
-        dispatch(authLogin({name: "Welcome", token: {refresh: response.refresh, access: response.access}}))
+        dispatch(authLogin(
+          {
+            access: response.access,
+            refresh: response.refresh
+          }
+        ))
 
       } catch (error) {
         dispatch(authLogout())

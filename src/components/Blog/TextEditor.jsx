@@ -2,14 +2,14 @@ import React from 'react'
 import {Editor } from '@tinymce/tinymce-react';
 import {Controller } from 'react-hook-form';
 
-function TextEditor({name, control, required=false, height, width, defaultValue =""}) {
+function TextEditor({name, control, required=false, minLength=1500, height, width, defaultValue =""}) {
   return (
     <Controller
     name={name || "textEditor"}
     control={control}
     rules={{ 
         required: required,
-        minLength: 1500,
+        minLength: minLength,
     }}
     render={({field: {onChange}}) => (
         <Editor

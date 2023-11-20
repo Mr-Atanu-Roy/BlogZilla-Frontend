@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
@@ -114,7 +114,7 @@ function WriteBlogsForm() {
         <div className='mb-2.5 px-1.5 flex items-center justify-between'>
             <Label htmlFor="title" className="flex items-center"><FileText className="w-4 h-4 mr-1" /> Write Your Post: </Label>
         </div>
-        <TextEditor name="content" height="620px" width="880px" control={control} required={true} defaultValue='' />
+        <TextEditor name="content" height="620px" width="880px" minLength={1500} control={control} required={true} defaultValue='' />
       </div>
 
       <div className='flex items-center justify-evenly w-full mt-10'>
