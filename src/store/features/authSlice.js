@@ -1,6 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {saveToken, getToken, deleteToken} from '../../utils/handelTokens'
 
+import { jwtDecode } from "jwt-decode"
+
 //sample initial state
 /*
 initialState = {
@@ -31,7 +33,10 @@ const authSlice = createSlice({
             state.status = true;
             state.userData = {token: action.payload}
 
-            // TODO: parse the access token and save the user data
+            const decode_access = jwtDecode(action.payload.access)
+
+            state.userData.uuid = decode_access.uuid;
+            state.userData.name = `${(decode_access.first_name).trim() != '' ? decode_access.first_name : ''} ${(decode_access.last_name).trim() != '' ? decode_access.last_name : ''}`;
 
             //saving token to local storage
             saveToken(action.payload)
