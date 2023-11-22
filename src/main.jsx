@@ -13,7 +13,7 @@ import {
   Home,
   Dashboard,
   ListBlogs,
-  WriteBlogs,
+  WriteBlogs, ReadBlog, EditBlog,
   PageNotFound,
   ResetPassword, ResetPasswordRedirect,
   EmailVerify, EmailVerifyRedirect
@@ -39,8 +39,16 @@ const router = createBrowserRouter([
         errorElement: <PageNotFound />,
         children: [
           {
+            path: ":uuid",
+            element: <ReadBlog />,
+          },
+          {
             path: "write",
             element: <WriteBlogs />,
+          },
+          {
+            path: "edit/:uuid",
+            element: <EditBlog />,
           },
           {
             path: "latest",
@@ -77,10 +85,10 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
       <RouterProvider router={router}/>
       <Toaster />
-    </Provider>
-  </React.StrictMode>,
+    </Provider>,
+  {/* </React.StrictMode>, */}
 )

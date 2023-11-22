@@ -1,6 +1,6 @@
 import React from 'react'
 
-
+import { TagsBtn } from '../index'
 import { Skeleton } from "@/components/ui/skeleton"
 
 import { MessageCircle, ThumbsUp, UserCircle } from 'lucide-react'
@@ -43,9 +43,7 @@ function HorizontalCard({
                 </div>
                 {
                   tag &&
-                  <div>
-                    <Link to={`/post/tags/${tag}`} className='py-1.5 px-3 lowercase font-medium text-xs bg-gray-300 hover:bg-gray-400 transition-colors duration-200 ease-in-out rounded-md text-black'>{tag}</Link>
-                  </div>
+                  <TagsBtn title={tag}/>
                 }
             </div>
         </div>

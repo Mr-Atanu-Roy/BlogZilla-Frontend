@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { TagsBtn } from '../index'
+
 import {
     Card,
     CardContent,
@@ -56,9 +58,7 @@ function VerticalCard({
                     </Link>
                     {
                         tag &&
-                        <Link to={`/post/tags/${tag}`} className='py-1.5 px-3 lowercase font-medium text-xs bg-gray-300 hover:bg-gray-400 transition-colors duration-200 ease-in-out rounded-md text-black'>
-                            {tag}
-                        </Link>
+                        <TagsBtn title={tag}/>
                     }
                 </CardDescription>
             </CardHeader>

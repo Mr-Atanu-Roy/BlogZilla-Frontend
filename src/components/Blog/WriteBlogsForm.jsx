@@ -1,31 +1,31 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
+
+import { postService } from '../../service/index'
+import {useAPIErrors} from '../../hooks/index'
+
 import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useToast } from '@/components/ui/use-toast'
 
-import { TextEditor } from '../index'
+import { TextEditor, TagsController } from '../index'
 
-import { X, MoveRight, Save, Subtitles, Tags, FileText, FileImage } from "lucide-react"
+import { MoveRight, Save, Subtitles, FileText, FileImage } from "lucide-react"
 
 function WriteBlogsForm() {
+  const type = ['image/png', 'image/jpeg', 'image/jpg']
 
   const {toast} = useToast()
   const [loading, setLoading] = useState(false)
 
-  const { register, watch, handleSubmit, control, setValue, getValues } = useForm({
-    defaultValues: {
-      tags: [],
-      publish: true,
-    },
-  });
+  const { register, watch, handleSubmit, control, setValue, setError, clearErrors, getValues } = useForm();
 
-  //watch the tags
+  //watch the tags and picture
   const watchTags = watch('tags')
+  const watchPicture = watch('picture') //TODO: add the picture preview
 
   const handelError = (errors) => {
-    console.log(getValues())
     if(errors.title?.type == "required") toast({ variant: "destructive", title: 'Title is required',})
     if(errors.title?.type == "minLength" || errors.title?.type == "maxLength") toast({ variant: "destructive", title: 'Title should be between 8 to 45 characters',})
     
@@ -34,80 +34,93 @@ function WriteBlogsForm() {
     if(errors.content?.type == "required") toast({ variant: "destructive", title: 'Post Content is required',})
     if(errors.content?.type == "minLength") toast({ variant: "destructive", title: 'Post Content must be more that 1500 characters',})
 
+    if(errors.tags?.type == "required") toast({ variant: "destructive", title: 'At least 1 tags is required',})
   }
 
   const publishPost = async(data) => {
-    console.log(data)
+    setLoading(true)
+
+    try{
+      if(!type.includes(data.picture[0].type)) {
+        toast({ variant: "destructive", title: 'Picture must be of type png/jpg/jpeg image',})
+        return
+      }
+      data = {
+        published: true,
+        title: data.title,
+        header_img: data.picture[0],
+        content: data.content,
+        tags: data.tags.join(", "),
+      }
+
+      const response = await postService.createPost(data)
+      if(response.status == 201){
+        toast({ variant: "success", title: "Post published Successfully.".toUpperCase(),})
+      }else if(response.status == 401 && response.data?.detail){
+        toast({ variant: "destructive", title: "Login to publish posts.".toUpperCase(),})
+      }else if(response.status == 400 && response.data){
+        const responseErrors = useAPIErrors(response.data) //get the errors in array format
+        for (let index = 0; index < responseErrors.length; index++) {
+            toast({ variant: "destructive", title: responseErrors[index].toUpperCase(),})
+        }
+      }else{
+          toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
+      }        
+    }catch(errors){
+      toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
+    }finally{
+      setLoading(false)
+    }
+
+
   } 
 
+  // TODO: complete the save as draft functionality
   const saveAsDraft = async(data) => {
-    data = {...data, publish: false}
+    setLoading(true)
+
+    try{
+      if(data.picture[0] && !type.includes(data.picture[0].type)) {
+        toast({ variant: "destructive", title: 'Picture must be of type png/jpg/jpeg image',})
+        return
+      }
+      
+      data = {
+        published: true,
+        title: data.title,
+        header_img: data.picture[0],
+        content: data.content,
+        tags: data.tags.join(", "),
+      }
+
+    }catch{
+      toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
+    }finally{
+      setLoading(false)
+    }
   }
 
 
-  //func to handel tag adding
-  const addTag = (tag) => {
-    const currentTags = getValues('tags') || [];
-    const newTags = [...currentTags, tag.toLowerCase()];
-    setValue('tags', newTags);
-  };
-
-  //func to handel tag removing
-  const removeTag = (index) => {
-    const currentTags = getValues('tags') || [];
-    const newTags = currentTags.filter((_, i) => i !== index);
-    setValue('tags', newTags);
-  };
 
   return (
     <form onSubmit={handleSubmit(publishPost, handelError)}>
 
-      <div className="grid grid-cols-2 gap-5 mb-10">
-          <div className='mx-auto'>
-            <div>
+      <div className="mb-10">
+          <div className='flex  items-center justify-between w-11/12 mx-auto'>
+            <div className='mr-3'>
               <Label htmlFor="title" className="flex items-center"><Subtitles className="w-4 h-4 mr-1" /> Post Title: </Label>
               <Input type="text" placeholder="Give a post title" className="w-[350px]"
                 {...register("title", {required: true, minLength: 8, maxLength: 45, pattern: /^[a-zA-Z0-9\s]+$/})}
               />
             </div>
-            <div className='mt-5'>
-              <Label htmlFor="tags" className="flex items-center"><Tags className="w-4 h-4 mr-1" /> Tags: </Label>
-              <Input type="text" placeholder="Add tags to post" className="w-[350px]" 
-                onKeyPress={(event) => {
-                  if (event.key === 'Enter') {
-                    event.preventDefault()
-                    addTag(event.target.value)
-                    event.target.value = ''
-                  }
-                }}
-              />
-            </div>
-          </div>
-          <div className='mx-auto'>
-            <div>
+            <div className='ml-3'>
               <Label htmlFor="picture" className="flex items-center"><FileImage className="w-4 h-4 mr-1" /> Picture: </Label>
               <Input type="file" id="picture" className="w-[350px] cursor-pointer"
                 {...register("picture", {required: true})}
               />
             </div>
-            <div className='mt-6'>
-              <Label className="flex items-center"><Tags className="w-4 h-4 mr-1" /> Tags Added: </Label>
-              
-              <div className='flex flex-wrap mt-2.5 w-[350px]'>
-                {
-                  watchTags.length > 0 ? watchTags.map((tag, index) => (
-                    <div key={index+tag} className='text-sm m-1 items-center justify-center font-medium flex w-fit bg-green-400 rounded-full px-3 py-1.5'>
-                      <span>{tag}</span> 
-                      <span><X className='w-4 h-4 ml-1 cursor-pointer' onClick={() => removeTag(index)}/></span>
-                    </div>
-                  )) : (<p className='text-gray-400 text-sm'>No tags added yet</p>)
-                }
-              </div>
-            </div>
-            <div>
-
-            </div>
           </div>
+          <TagsController name="tags" control={control} required={true} defaultValue={getValues("tags")} watchTags={watchTags} setValue={setValue} getValues={getValues}/>
       </div>
 
       <div>

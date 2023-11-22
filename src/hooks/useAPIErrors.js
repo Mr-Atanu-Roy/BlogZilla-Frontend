@@ -10,7 +10,7 @@ export default function useAPIErrors(err) {
         }else if(typeof err === 'object'){
             const keys = Object.keys(err)
             for (let index = 0; index < keys.length; index++) {
-                error.push(err[keys[index]][0])
+                err[keys[index]][0].toLowerCase() == "this field is required." ? error.push(keys[index] + " is required.") : error.push(err[keys[index]][0])
             }
         }else{
             error.push("Something went wrong. Please try again later.")
