@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button"
 import { useToast } from '@/components/ui/use-toast'
 
   
-import { MessageCircle } from 'lucide-react'
+import { MessageCircle, UserCircle } from 'lucide-react'
 
 
 function Comments({className, width="7", height="7", blogUUID}) {
@@ -84,7 +84,7 @@ function Comments({className, width="7", height="7", blogUUID}) {
         </SheetTrigger>
         <SheetContent className="overflow-y-auto">
             <SheetHeader>
-            <SheetTitle>{comments} {comments>2 ? "Comments" : "Comment"} till now</SheetTitle>
+            <SheetTitle>{comments} {comments>1 ? "Comments" : "Comment"} till now</SheetTitle>
             <SheetDescription className="overflow-y-auto">
                 <>
                 <form disabled={loading} className="mt-6 px-3">
@@ -142,10 +142,14 @@ function Comments({className, width="7", height="7", blogUUID}) {
                             comment.length>0 &&
                             comment.map((item) => (
                             <div key={item.uuid} className="flex items-start space-x-4 mb-6 pb-2.5 border-b">
-                                <img src="http://localhost:8000/media/blog_header_img/6454562_eRLL2jN.jpg" alt="" className='rounded-full w-9 h-9 object-center object-cover aspect-square' />
+                                {
+                                    item.user?.profile_pic ?
+                                    <img src={item.user.profile_pic} alt={item.user?.first_name+" "+item.user?.last_name} className='rounded-full w-9 h-9 object-center object-cover aspect-square' /> : 
+                                    <UserCircle className='w-9 h-9' />
+                                }
                                 <div className="space-y-2 w-full">
                                     <div className="w-full flex items-center justify-between">
-                                        <Link to="/author/" className="font-medium text-base text-black">Atanu Roy</Link>
+                                        <Link to="/author/" className="font-medium text-base text-black">{item.user?.first_name+" "+item.user?.last_name}</Link>
                                         <p className="text-xs text-gray-400">{handelDate(item.created_at).day+"."+handelDate(item.created_at).month+"."+handelDate(item.created_at).year}</p>
                                     </div>
                                     <p className="text-sm">

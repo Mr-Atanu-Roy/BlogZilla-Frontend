@@ -26,15 +26,44 @@ import { FollowBtn } from '../../index'
 import { useToast } from '@/components/ui/use-toast'
 
   
-import { ThumbsUp } from 'lucide-react'
-import { set } from 'react-hook-form'
+import { ThumbsUp, UserCircle } from 'lucide-react'
 
-function Likes({className, width="7", height="7"}) {
+function Likes({className, width="7", height="7", blogUUID}) {
     const [loading, setLoading] = useState(false)
     const [likes, setLikes] = useState(0)
     const [like, setLike] = useState([])
     const [next, setNext] = useState(null)
     const [previous, setPrevious] = useState(null)
+    const {toast} = useToast()
+
+    useEffect(() => {
+
+        (async () => {
+
+            setLoading(true);
+            
+            try {
+                if(blogUUID){
+                    const response = await postService.getLikes(blogUUID);
+                    if(response.status == 200){
+                        setLike(response.results)
+                        setLikes(response.count)
+                    }else{
+                        toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
+                    }
+                }
+              
+
+            } catch (error) {
+              toast({ variant: "destructive", title: 'Something went wrong.',})
+            }finally{
+              setLoading(false);
+            }
+      
+          })();
+
+    }, [blogUUID]);
+
 
   return (
     <Sheet>
@@ -55,7 +84,7 @@ function Likes({className, width="7", height="7"}) {
         </SheetTrigger>
         <SheetContent>
             <SheetHeader>
-            <SheetTitle>{likes} {likes>2 ? "Likes" : "Like"} till now</SheetTitle>
+            <SheetTitle>{likes} {likes>1 ? "Likes" : "Like"} till now</SheetTitle>
             <SheetDescription>
                 <>
                 <div className='w-full flex items-end justify-between px-3 mt-6'>
@@ -123,14 +152,18 @@ function Likes({className, width="7", height="7"}) {
                         {
                             like.length>0 &&
                             like.map((item) => (
-                            <div className="flex items-start space-x-4 mb-6 pb-2.5">
-                                <img src="http://localhost:8000/media/blog_header_img/6454562_eRLL2jN.jpg" alt="" className='rounded-full w-9 h-9 object-center object-cover aspect-square' />
+                            <div key={item.uuid} className="flex items-start space-x-4 mb-6 pb-2.5">
+                                {
+                                    item.user?.profile_pic ?
+                                    <img src={item.user.profile_pic} alt={item.user?.first_name+" "+item.user?.last_name} className='rounded-full w-9 h-9 object-center object-cover aspect-square' /> : 
+                                    <UserCircle className='w-9 h-9' />
+                                }
                                 <div className="space-y-2 w-full">
                                     <div className='w-full flex items-center justify-between'>
-                                        <Link to="/author/" className="font-medium text-base text-black">Atanu Roy</Link>
+                                        <Link to="/author/" className="font-medium text-base text-black">{item.user?.first_name+" "+item.user?.last_name}</Link>
                                         <p className="text-xs text-gray-400">{handelDate(item.created_at).day+"."+handelDate(item.created_at).month+"."+handelDate(item.created_at).year}</p>
                                     </div>
-                                    <FollowBtn className="rounded-full" authorUUID={""} />
+                                    <FollowBtn className="rounded-full" authorUUID={item.user?.uuid} />
                                 </div>
                             </div>
                             ))

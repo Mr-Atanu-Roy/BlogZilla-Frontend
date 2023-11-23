@@ -102,6 +102,24 @@ class PostService{
         }
     }
     
+    async getLikes(uuid, page=1){
+        try {
+            const response = await this.client.get(
+                `${uuid}/likes`,
+                {
+                    params: {page}
+                }
+            );
+
+            return {...response.data, status: response.status};
+            
+        } catch (error) {
+            
+            console.log("POST SERVICE :: GET COMMENTS ERROR :: ", error.message )
+            return error.response;
+        }
+    }
+    
     
 }
 
