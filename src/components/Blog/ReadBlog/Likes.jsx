@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import { postService } from '../../../service/index'
 import handelDate from '../../../utils/handelDate'
 
+import InfiniteScroll from 'react-infinite-scroll-component'
+
 import {
     Sheet,
     SheetContent,
@@ -20,27 +22,28 @@ TooltipProvider,
 TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Button } from "@/components/ui/button"
 import { Label } from '@/components/ui/label'
 import { FollowBtn } from '../../index'
 import { useToast } from '@/components/ui/use-toast'
-
+import { Spiner } from '../../index'
   
 import { ThumbsUp, UserCircle } from 'lucide-react'
 
 function Likes({className, width="7", height="7", blogUUID}) {
-    const [loading, setLoading] = useState(false)
-    const [likes, setLikes] = useState(0)
-    const [like, setLike] = useState([])
-    const [next, setNext] = useState(null)
-    const [previous, setPrevious] = useState(null)
     const {toast} = useToast()
+    const [loading, setLoading] = useState(false)
+    const [like, setLike] = useState([]) 
+    const [likes, setLikes] = useState(0)
+    const [page, setPage] = useState(1)
+    const [hasMore, setHasMore] = useState(true)
 
     useEffect(() => {
 
         (async () => {
 
             setLoading(true);
+            setPage(1);
+            setLike([]);
             
             try {
                 if(blogUUID){
@@ -48,12 +51,15 @@ function Likes({className, width="7", height="7", blogUUID}) {
                     if(response.status == 200){
                         setLike(response.results)
                         setLikes(response.count)
+                        if(response.next != null){
+                            setPage((prevPage)=>prevPage+1)
+                        }else{
+                            setHasMore(false)
+                        }
                     }else{
                         toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
                     }
-                }
-              
-
+                }             
             } catch (error) {
               toast({ variant: "destructive", title: 'Something went wrong.',})
             }finally{
@@ -63,6 +69,25 @@ function Likes({className, width="7", height="7", blogUUID}) {
           })();
 
     }, [blogUUID]);
+
+    
+    const fetchNext = async () => {
+        try {
+            const response = await postService.getLikes(blogUUID, page);
+            if(response.status == 200){
+                setLike((prevComment)=>[...prevComment, ...response.results])
+                if(response.next != null){
+                    setPage((prevPage)=>prevPage+1)
+                }else{
+                    setHasMore(false)
+                }
+            }else{
+                toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
+            }
+        } catch (error) {
+          toast({ variant: "destructive", title: 'Something went wrong.',})
+        }
+    }
 
 
   return (
@@ -82,7 +107,7 @@ function Likes({className, width="7", height="7", blogUUID}) {
                 </Tooltip>
             </TooltipProvider>
         </SheetTrigger>
-        <SheetContent>
+        <SheetContent id='sheet-content' className="overflow-y-auto">
             <SheetHeader>
             <SheetTitle>{likes} {likes>1 ? "Likes" : "Like"} till now</SheetTitle>
             <SheetDescription>
@@ -147,10 +172,16 @@ function Likes({className, width="7", height="7", blogUUID}) {
                             </div>
                         </div>
                         </> :
-                        <>
-                        <>
+                        (
+                        like.length>0 &&
+                        <InfiniteScroll 
+                        dataLength={like.length}
+                        scrollableTarget="sheet-content"
+                        next={fetchNext}
+                        hasMore={hasMore}
+                        loader={<Spiner/>}>
+                        <div className='overflow-y-hidden'>
                         {
-                            like.length>0 &&
                             like.map((item) => (
                             <div key={item.uuid} className="flex items-start space-x-4 mb-6 pb-2.5">
                                 {
@@ -168,14 +199,9 @@ function Likes({className, width="7", height="7", blogUUID}) {
                             </div>
                             ))
                         }
-                        </>
-                        {
-                            next &&
-                            <div className="w-full text-right">
-                                <Button variant="ghost" className="text-xs">View More</Button>
-                            </div>
-                        }
-                        </>
+                        </div>
+                        </InfiniteScroll>
+                        )
                     }
                 </div>
                 </>

@@ -33,6 +33,7 @@ import ContentBody from "./Blog/ReadBlog/ContentBody";
 import ContentFooter from "./Blog/ReadBlog/ContentFooter";
 import ContentHeaderSkeleton from "./Blog/ReadBlog/ContentHeaderSkeleton";
 import ContentBodySkeleton from "./Blog/ReadBlog/ContentBodySkeleton";
+import Spiner from "./Spiner";
 
 export {
     Logo,
@@ -41,6 +42,8 @@ export {
     ModalLoginForm,
     Header,
     Footer,
+    Spiner,
+
     HeaderPopover,
     AuthBase,
     SearchBar,

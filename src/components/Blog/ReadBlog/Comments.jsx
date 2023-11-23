@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import { postService } from '../../../service/index'
 import handelDate from '../../../utils/handelDate'
 
+import InfiniteScroll from 'react-infinite-scroll-component'
+
 import {
     Sheet,
     SheetContent,
@@ -23,6 +25,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useToast } from '@/components/ui/use-toast'
+import { Spiner } from '../../index'
 
   
 import { MessageCircle, UserCircle } from 'lucide-react'
@@ -31,17 +34,20 @@ import { MessageCircle, UserCircle } from 'lucide-react'
 function Comments({className, width="7", height="7", blogUUID}) {
     
     const {toast} = useToast()
-    const [loading, setLoading] = useState(false)
-    const [comment, setComment] = useState([])
-    const [comments, setComments] = useState(0)
-    const [next, setNext] = useState(null)
-    const [previous, setPrevious] = useState(null)
+    const [loading, setLoading] = useState(false) //holds the loading state
+    const [comment, setComment] = useState([]) //holds the comments data
+    const [comments, setComments] = useState(0) //holds the total number of comments
+    const [page, setPage] = useState(1) //holds the page number
+    const [hasMore, setHasMore] = useState(true) //holds bool value of whether more data is available or not
 
+
+    
     useEffect(() => {
 
         (async () => {
-
             setLoading(true);
+            setPage(1);
+            setComment([]);
             
             try {
                 if(blogUUID){
@@ -49,6 +55,11 @@ function Comments({className, width="7", height="7", blogUUID}) {
                     if(response.status == 200){
                         setComment(response.results)
                         setComments(response.count)
+                        if(response.next != null){
+                            setPage((prevPage)=>prevPage+1)
+                        }else{
+                            setHasMore(false)
+                        }
                     }else{
                         toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
                     }
@@ -64,6 +75,27 @@ function Comments({className, width="7", height="7", blogUUID}) {
           })();
 
     }, [blogUUID]);
+    
+
+    const fetchNext = async () => {
+        try {
+            const response = await postService.getComments(blogUUID, page);
+            if(response.status == 200){
+                setComment((prevComment)=>[...prevComment, ...response.results])
+                if(response.next != null){
+                    setPage((prevPage)=>prevPage+1)
+                }else{
+                    setHasMore(false)
+                }
+            }else{
+                toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
+            }
+        } catch (error) {
+          toast({ variant: "destructive", title: 'Something went wrong.',})
+        }
+    }
+
+
 
   return (
     <Sheet>
@@ -82,10 +114,10 @@ function Comments({className, width="7", height="7", blogUUID}) {
                 </Tooltip>
             </TooltipProvider>
         </SheetTrigger>
-        <SheetContent className="overflow-y-auto">
+        <SheetContent id='sheet-content' className="overflow-y-auto">
             <SheetHeader>
             <SheetTitle>{comments} {comments>1 ? "Comments" : "Comment"} till now</SheetTitle>
-            <SheetDescription className="overflow-y-auto">
+            <SheetDescription>
                 <>
                 <form disabled={loading} className="mt-6 px-3">
                     <Input type="text" placeholder="Comment your thoughts..." className={`${loading ? 'cursor-not-allowed' : 'cursor-pointer'}`} disabled={loading} />
@@ -136,12 +168,18 @@ function Comments({className, width="7", height="7", blogUUID}) {
                             </div>
                         </div>
                         </> :
-                        <>
-                        <>
+                        (
+                        comment.length>0 && 
+                        <InfiniteScroll 
+                        dataLength={comment.length}
+                        scrollableTarget="sheet-content"
+                        next={fetchNext}
+                        hasMore={hasMore}
+                        loader={<Spiner/>}>
+                        <div className='overflow-y-hidden'>
                         {
-                            comment.length>0 &&
-                            comment.map((item) => (
-                            <div key={item.uuid} className="flex items-start space-x-4 mb-6 pb-2.5 border-b">
+                            comment.map((item, index) => (
+                            <div key={index} className="overflow-hidden flex items-start space-x-4 mb-6 pb-2.5 border-b">
                                 {
                                     item.user?.profile_pic ?
                                     <img src={item.user.profile_pic} alt={item.user?.first_name+" "+item.user?.last_name} className='rounded-full w-9 h-9 object-center object-cover aspect-square' /> : 
@@ -154,19 +192,17 @@ function Comments({className, width="7", height="7", blogUUID}) {
                                     </div>
                                     <p className="text-sm">
                                         {item.comment} 
-                                    </p>                                
+                                    </p>     
+                                    <div className="flex items-center justify-between">
+
+                                    </div>                           
                                 </div>
                             </div>
                             ))
                         }
-                        </>
-                        {
-                            next &&
-                            <div className="w-full text-right">
-                                <Button variant="ghost" className="text-xs">View More</Button>
-                            </div>
-                        }
-                        </>
+                        </div>
+                        </InfiniteScroll>
+                        )
                     }
                 </div>
                 </>
