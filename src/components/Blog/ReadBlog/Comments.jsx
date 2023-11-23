@@ -28,7 +28,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { Spiner } from '../../index'
 
   
-import { MessageCircle, UserCircle } from 'lucide-react'
+import { MessageCircle, UserCircle, ThumbsUp } from 'lucide-react'
 
 
 function Comments({className, width="7", height="7", blogUUID}) {
@@ -52,6 +52,7 @@ function Comments({className, width="7", height="7", blogUUID}) {
             try {
                 if(blogUUID){
                     const response = await postService.getComments(blogUUID);
+                    console.log(response)
                     if(response.status == 200){
                         setComment(response.results)
                         setComments(response.count)
@@ -179,24 +180,44 @@ function Comments({className, width="7", height="7", blogUUID}) {
                         <div className='overflow-y-hidden'>
                         {
                             comment.map((item, index) => (
-                            <div key={index} className="overflow-hidden flex items-start space-x-4 mb-6 pb-2.5 border-b">
-                                {
-                                    item.user?.profile_pic ?
-                                    <img src={item.user.profile_pic} alt={item.user?.first_name+" "+item.user?.last_name} className='rounded-full w-9 h-9 object-center object-cover aspect-square' /> : 
-                                    <UserCircle className='w-9 h-9' />
-                                }
-                                <div className="space-y-2 w-full">
-                                    <div className="w-full flex items-center justify-between">
-                                        <Link to="/author/" className="font-medium text-base text-black">{item.user?.first_name+" "+item.user?.last_name}</Link>
-                                        <p className="text-xs text-gray-400">{handelDate(item.created_at).day+"."+handelDate(item.created_at).month+"."+handelDate(item.created_at).year}</p>
+                            <div key={index} className="space-y-3 mb-8 pb-2.5 border-b">
+                                <div className='overflow-hidden flex items-start space-x-4 '>
+                                    {
+                                        item.user?.profile_pic ?
+                                        <img src={item.user.profile_pic} alt={item.user?.first_name+" "+item.user?.last_name} className='rounded-full w-9 h-9 object-center object-cover aspect-square' /> : 
+                                        <UserCircle className='w-9 h-9' />
+                                    }
+                                    <div className="space-y-2 w-full">
+                                        <div className="w-full flex items-center justify-between">
+                                            <Link to="/author/" className="font-medium text-base text-black">{item.user?.first_name+" "+item.user?.last_name}</Link>
+                                            <p className="text-xs text-gray-400">{handelDate(item.created_at).day+"."+handelDate(item.created_at).month+"."+handelDate(item.created_at).year}</p>
+                                        </div>
+                                        <p className="text-sm">
+                                            {item.comment} 
+                                        </p>
+                                        <p className="text-xs text-primary">View more</p>     
                                     </div>
-                                    <p className="text-sm">
-                                        {item.comment} 
-                                    </p>     
-                                    <div className="flex items-center justify-between">
-
-                                    </div>                           
                                 </div>
+                                <div className="flex items-center justify-between w-full px-2 pt-1.5">
+                                    <div className='flex items-center'>
+                                        {
+                                            item.comments_no > 0 && 
+                                            <Button variant="link" className="pl-0">
+                                                Replies ({item.comments_no})
+                                            </Button>
+                                        }
+                                        {
+                                            item.likes_no > 0 && 
+                                            <Button variant="link" className="pl-0">
+                                                Likes ({item.likes_no})
+                                            </Button>
+                                        }
+                                    </div>
+                                    <div className='flex items-center'>
+                                        <ThumbsUp className='w-5 h-5 mr-3'/>
+                                        <MessageCircle className='w-5 h-5'/>
+                                    </div>
+                                </div>                           
                             </div>
                             ))
                         }
