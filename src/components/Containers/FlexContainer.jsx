@@ -6,12 +6,12 @@ function FlexContainer({
     flexWrap = "wrap", 
     justifyContent = "evenly",
     alignItems = "center",
-    mt = "8",
-    py = "4",
-    px = "24",
+    mt,
+    py,
+    px,
     }) {
     return (
-        <div className={`mt-${mt} flex flex-${flexDirection=="col" ? "col" : "row"} flex-${flexWrap=="nowrap" ? "nowrap" : "wrap"} items-${alignItems} justify-${justifyContent} px-${px} py-${py}`}>
+        <div className={`${mt ? 'mt-'+mt : 'mt-8'} flex flex-${flexDirection=="col" ? "col" : "row"} flex-${flexWrap=="nowrap" ? "nowrap" : "wrap"} items-${alignItems} justify-${justifyContent} ${px ? 'px-'+px : 'px-24'} ${py ? 'py-'+py : 'py-4'}`}>
             {children}
         </div>
     )

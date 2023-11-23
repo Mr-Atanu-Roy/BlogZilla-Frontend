@@ -25,7 +25,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Label } from '@/components/ui/label'
 import { FollowBtn } from '../../index'
 import { useToast } from '@/components/ui/use-toast'
-import { Spiner } from '../../index'
+import { Spinner } from '../../index'
   
 import { ThumbsUp, UserCircle } from 'lucide-react'
 
@@ -179,7 +179,7 @@ function Likes({className, width="7", height="7", blogUUID}) {
                         scrollableTarget="sheet-content"
                         next={fetchNext}
                         hasMore={hasMore}
-                        loader={<Spiner/>}>
+                        loader={<Spinner/>}>
                         <div className='overflow-y-hidden'>
                         {
                             like.map((item) => (

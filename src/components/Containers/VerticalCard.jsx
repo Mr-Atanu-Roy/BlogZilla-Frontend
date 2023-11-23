@@ -36,13 +36,13 @@ function VerticalCard({
     if(title && title.length>60) title = title.slice(0,60)+"...."
 
     return (
-        <Card className={`w-[${width}] m-5 p-0 border-none shadow-none`}>
+        <Card className={`w-[${width}] h-[400px] m-10 p-0 border-none shadow-none flex flex-col justify-between`}>
             <CardHeader className="p-0">
             
                     <Link to={`/post/${postUUID}`}>
                         {
                             headerImg ? 
-                            <img src={`${headerImg}`} alt={title} className={`w-full h-${headerImgHeight} object-center object-cover aspect-video`} /> : 
+                            <img src={`${headerImg}`} alt={title} className={`rounded w-full h-${headerImgHeight} object-center object-cover aspect-video`} /> : 
                             <Skeleton className={`w-full h-${headerImgHeight}`}/>
                         }
                     </Link>
@@ -65,7 +65,7 @@ function VerticalCard({
             <CardContent className="px-1 mt-6">
                 <Link to={`/post/${postUUID}`} className='text-xl font-medium'>{title}</Link>
             </CardContent>
-            <CardFooter className="px-1 flex items-end justify-between text-sm font-medium text-gray-500">
+            <CardFooter className="px-1 pb-0 flex items-end justify-between text-sm font-medium text-gray-500">
                 <div className='flex'>
                     <div className='flex items-center'>
                         <MessageCircle className='w-5 h-5 mr-1' />

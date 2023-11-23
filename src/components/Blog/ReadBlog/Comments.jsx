@@ -25,7 +25,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useToast } from '@/components/ui/use-toast'
-import { Spiner } from '../../index'
+import { Spinner } from '../../index'
 
   
 import { MessageCircle, UserCircle, ThumbsUp } from 'lucide-react'
@@ -176,7 +176,7 @@ function Comments({className, width="7", height="7", blogUUID}) {
                         scrollableTarget="sheet-content"
                         next={fetchNext}
                         hasMore={hasMore}
-                        loader={<Spiner/>}>
+                        loader={<Spinner/>}>
                         <div className='overflow-y-hidden'>
                         {
                             comment.map((item, index) => (
