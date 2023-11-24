@@ -1,8 +1,6 @@
 import {useState, useEffect} from 'react'
 
-import { Link } from 'react-router-dom'
 import { postService } from '../../../service/index'
-import handelDate from '../../../utils/handelDate'
 
 import InfiniteScroll from 'react-infinite-scroll-component'
 
@@ -21,13 +19,11 @@ TooltipContent,
 TooltipProvider,
 TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Skeleton } from "@/components/ui/skeleton"
 import { Label } from '@/components/ui/label'
-import { FollowBtn } from '../../index'
 import { useToast } from '@/components/ui/use-toast'
-import { Spinner } from '../../index'
+import { Spinner, LikesContainer, LikesContainerSkeleton } from '../../index'
   
-import { ThumbsUp, UserCircle } from 'lucide-react'
+import { ThumbsUp } from 'lucide-react'
 
 function Likes({className, width="7", height="7", blogUUID}) {
     const {toast} = useToast()
@@ -129,48 +125,14 @@ function Likes({className, width="7", height="7", blogUUID}) {
                     {
                         loading ?
                         <>
-                        <div className="flex items-start space-x-4 mb-6">
-                            <Skeleton className="h-12 w-12 rounded-full" />
-                            <div className="space-y-2">
-                                <Skeleton className="h-4 w-[125px]" />
-                                <Skeleton className="h-9 w-[4.77rem]" />
-                            </div>
-                        </div>
-                        <div className="flex items-start space-x-4 mb-6">
-                            <Skeleton className="h-12 w-12 rounded-full" />
-                            <div className="space-y-2">
-                                <Skeleton className="h-4 w-[125px]" />
-                                <Skeleton className="h-9 w-[4.77rem]" />
-                            </div>
-                        </div>
-                        <div className="flex items-start space-x-4 mb-6">
-                            <Skeleton className="h-12 w-12 rounded-full" />
-                            <div className="space-y-2">
-                                <Skeleton className="h-4 w-[125px]" />
-                                <Skeleton className="h-9 w-[4.77rem]" />
-                            </div>
-                        </div>
-                        <div className="flex items-start space-x-4 mb-6">
-                            <Skeleton className="h-12 w-12 rounded-full" />
-                            <div className="space-y-2">
-                                <Skeleton className="h-4 w-[125px]" />
-                                <Skeleton className="h-9 w-[4.77rem]" />
-                            </div>
-                        </div>
-                        <div className="flex items-start space-x-4 mb-6">
-                            <Skeleton className="h-12 w-12 rounded-full" />
-                            <div className="space-y-2">
-                                <Skeleton className="h-4 w-[125px]" />
-                                <Skeleton className="h-9 w-[4.77rem]" />
-                            </div>
-                        </div>
-                        <div className="flex items-start space-x-4 mb-6">
-                            <Skeleton className="h-12 w-12 rounded-full" />
-                            <div className="space-y-2">
-                                <Skeleton className="h-4 w-[125px]" />
-                                <Skeleton className="h-9 w-[4.77rem]" />
-                            </div>
-                        </div>
+                        <LikesContainerSkeleton/>  
+                        <LikesContainerSkeleton/>  
+                        <LikesContainerSkeleton/>  
+                        <LikesContainerSkeleton/>  
+                        <LikesContainerSkeleton/>  
+                        <LikesContainerSkeleton/>  
+                        <LikesContainerSkeleton/>  
+                        <LikesContainerSkeleton/>  
                         </> :
                         (
                         like.length>0 &&
@@ -183,20 +145,12 @@ function Likes({className, width="7", height="7", blogUUID}) {
                         <div className='overflow-y-hidden'>
                         {
                             like.map((item) => (
-                            <div key={item.uuid} className="flex items-start space-x-4 mb-6 pb-2.5">
-                                {
-                                    item.user?.profile_pic ?
-                                    <img src={item.user.profile_pic} alt={item.user?.first_name+" "+item.user?.last_name} className='rounded-full w-9 h-9 object-center object-cover aspect-square' /> : 
-                                    <UserCircle className='w-9 h-9' />
-                                }
-                                <div className="space-y-2 w-full">
-                                    <div className='w-full flex items-center justify-between'>
-                                        <Link to="/author/" className="font-medium text-base text-black">{item.user?.first_name+" "+item.user?.last_name}</Link>
-                                        <p className="text-xs text-gray-400">{handelDate(item.created_at).day+"."+handelDate(item.created_at).month+"."+handelDate(item.created_at).year}</p>
-                                    </div>
-                                    <FollowBtn className="rounded-full" authorUUID={item.user?.uuid} />
-                                </div>
-                            </div>
+                            <LikesContainer key={item.uuid} 
+                                authorUUID={item.user?.uuid}
+                                authorName={item.user?.first_name+" "+item.user?.last_name}
+                                authorImg={item.user?.profile_photo}
+                                date={item.created_at}
+                            />
                             ))
                         }
                         </div>

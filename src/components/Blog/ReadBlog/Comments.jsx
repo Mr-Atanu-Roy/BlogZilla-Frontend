@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import { Link } from 'react-router-dom'
-
 import { postService } from '../../../service/index'
-import handelDate from '../../../utils/handelDate'
 
 import InfiniteScroll from 'react-infinite-scroll-component'
 
@@ -15,20 +12,21 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
+
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Skeleton } from "@/components/ui/skeleton"
+
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useToast } from '@/components/ui/use-toast'
-import { Spinner } from '../../index'
+import { Spinner, CommentContainer, CommentContainerSkeleton } from '../../index'
 
   
-import { MessageCircle, UserCircle, ThumbsUp } from 'lucide-react'
+import { MessageCircle } from 'lucide-react'
 
 
 function Comments({className, width="7", height="7", blogUUID}) {
@@ -52,7 +50,6 @@ function Comments({className, width="7", height="7", blogUUID}) {
             try {
                 if(blogUUID){
                     const response = await postService.getComments(blogUUID);
-                    console.log(response)
                     if(response.status == 200){
                         setComment(response.results)
                         setComments(response.count)
@@ -128,46 +125,14 @@ function Comments({className, width="7", height="7", blogUUID}) {
                     {
                         loading ?
                         <>
-                        <div className="flex items-start space-x-4 mb-6">
-                            <Skeleton className="h-12 w-12 rounded-full" />
-                            <div className="space-y-2">
-                                <Skeleton className="h-4 w-[100px]" />
-                                <Skeleton className="h-4 w-[250px]" />
-                                <Skeleton className="h-4 w-[250px]" />
-                            </div>
-                        </div>
-                        <div className="flex items-start space-x-4 mb-6">
-                            <Skeleton className="h-12 w-12 rounded-full" />
-                            <div className="space-y-2">
-                                <Skeleton className="h-4 w-[100px]" />
-                                <Skeleton className="h-4 w-[250px]" />
-                                <Skeleton className="h-4 w-[250px]" />
-                            </div>
-                        </div>
-                        <div className="flex items-start space-x-4 mb-6">
-                            <Skeleton className="h-12 w-12 rounded-full" />
-                            <div className="space-y-2">
-                                <Skeleton className="h-4 w-[100px]" />
-                                <Skeleton className="h-4 w-[250px]" />
-                                <Skeleton className="h-4 w-[250px]" />
-                            </div>
-                        </div>
-                        <div className="flex items-start space-x-4 mb-6">
-                            <Skeleton className="h-12 w-12 rounded-full" />
-                            <div className="space-y-2">
-                                <Skeleton className="h-4 w-[100px]" />
-                                <Skeleton className="h-4 w-[250px]" />
-                                <Skeleton className="h-4 w-[250px]" />
-                            </div>
-                        </div>
-                        <div className="flex items-start space-x-4 mb-6">
-                            <Skeleton className="h-12 w-12 rounded-full" />
-                            <div className="space-y-2">
-                                <Skeleton className="h-4 w-[100px]" />
-                                <Skeleton className="h-4 w-[250px]" />
-                                <Skeleton className="h-4 w-[250px]" />
-                            </div>
-                        </div>
+                        <CommentContainerSkeleton />
+                        <CommentContainerSkeleton />
+                        <CommentContainerSkeleton />
+                        <CommentContainerSkeleton />
+                        <CommentContainerSkeleton />
+                        <CommentContainerSkeleton />
+                        <CommentContainerSkeleton />
+                        <CommentContainerSkeleton />
                         </> :
                         (
                         comment.length>0 && 
@@ -179,46 +144,17 @@ function Comments({className, width="7", height="7", blogUUID}) {
                         loader={<Spinner/>}>
                         <div className='overflow-y-hidden'>
                         {
-                            comment.map((item, index) => (
-                            <div key={index} className="space-y-3 mb-8 pb-2.5 border-b">
-                                <div className='overflow-hidden flex items-start space-x-4 '>
-                                    {
-                                        item.user?.profile_pic ?
-                                        <img src={item.user.profile_pic} alt={item.user?.first_name+" "+item.user?.last_name} className='rounded-full w-9 h-9 object-center object-cover aspect-square' /> : 
-                                        <UserCircle className='w-9 h-9' />
-                                    }
-                                    <div className="space-y-2 w-full">
-                                        <div className="w-full flex items-center justify-between">
-                                            <Link to="/author/" className="font-medium text-base text-black">{item.user?.first_name+" "+item.user?.last_name}</Link>
-                                            <p className="text-xs text-gray-400">{handelDate(item.created_at).day+"."+handelDate(item.created_at).month+"."+handelDate(item.created_at).year}</p>
-                                        </div>
-                                        <p className="text-sm">
-                                            {item.comment} 
-                                        </p>
-                                        <p className="text-xs text-primary">View more</p>     
-                                    </div>
-                                </div>
-                                <div className="flex items-center justify-between w-full px-2 pt-1.5">
-                                    <div className='flex items-center'>
-                                        {
-                                            item.comments_no > 0 && 
-                                            <Button variant="link" className="pl-0">
-                                                Replies ({item.comments_no})
-                                            </Button>
-                                        }
-                                        {
-                                            item.likes_no > 0 && 
-                                            <Button variant="link" className="pl-0">
-                                                Likes ({item.likes_no})
-                                            </Button>
-                                        }
-                                    </div>
-                                    <div className='flex items-center'>
-                                        <ThumbsUp className='w-5 h-5 mr-3'/>
-                                        <MessageCircle className='w-5 h-5'/>
-                                    </div>
-                                </div>                           
-                            </div>
+                            comment.map((item) => (
+                            <CommentContainer key={item.uuid}
+                                authorUUID={item.user?.uuid}
+                                authorName={item.user?.first_name+" "+item.user?.last_name}
+                                authorImg={item.user?.profile_pic}
+                                commentUUD={item.uuid}
+                                comment={item.comment}
+                                date={item.created_at}
+                                commentReplies={item.comments_no}
+                                commentLikes={item.likes_no}
+                            />
                             ))
                         }
                         </div>
