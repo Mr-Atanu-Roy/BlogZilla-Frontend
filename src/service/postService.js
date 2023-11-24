@@ -1,15 +1,18 @@
-import {privateAxiosClient} from "./index";
+import {privateAxiosClient, publicAxiosClient} from "./index";
 
 class PostService{
 
-    client = privateAxiosClient({
+    privateClient = privateAxiosClient({
+        baseURL: "blog/",
+    });
+    publicClient = publicAxiosClient({
         baseURL: "blog/",
     });
 
 
     async getPosts(page=1, title='', name='', uuid='', latest=true, tags='', popular=false){
         try {
-            const response = await this.client.get(
+            const response = await this.publicClient.get(
                 "",
                 {
                     params: {title, name, uuid, latest, tags, popular, page}
@@ -26,7 +29,7 @@ class PostService{
 
     async retrievePost(uuid){
         try{
-            const response = await this.client.get(`${uuid}`);
+            const response = await this.publicClient.get(`${uuid}`);
 
             return {...response.data, status: response.status};
             
@@ -39,7 +42,7 @@ class PostService{
 
     async createPost(data){
         try{
-            const response = await this.client.post(
+            const response = await this.privateClient.post(
                 "",
                 data,
                 {
@@ -60,7 +63,7 @@ class PostService{
     
     async updatePost(uuid, data){
         try{
-            const response = await this.client.patch(
+            const response = await this.privateClient.patch(
                 `${uuid}`,
                 data,
                 {
@@ -79,7 +82,7 @@ class PostService{
 
     async getComments(uuid, page=1){
         try {
-            const response = await this.client.get(
+            const response = await this.publicClient.get(
                 `${uuid}/comments`,
                 {
                     params: {page}
@@ -97,7 +100,7 @@ class PostService{
     
     async getLikes(uuid, page=1){
         try {
-            const response = await this.client.get(
+            const response = await this.publicClient.get(
                 `${uuid}/likes`,
                 {
                     params: {page}

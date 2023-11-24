@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.infinite-scroll-component{
+  overflow: hidden !important;
+}
  
 
 @layer base {
