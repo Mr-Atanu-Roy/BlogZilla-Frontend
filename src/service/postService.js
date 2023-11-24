@@ -1,17 +1,10 @@
-import axios from "axios";
-import config from "../config/config";
-import { getToken } from "../utils/handelTokens";
+import {privateAxiosClient} from "./index";
 
 class PostService{
 
-    client = axios.create();
-    constructor() {
-        this.client.defaults.headers.common['Content-Type'] = 'application/json'
-        this.client.defaults.baseURL = `${config.BASE_API_ENDPOINT}blog/`
-
-        const token = getToken()
-        if (token) this.client.defaults.headers.common['Authorization'] = `Bearer ${getToken().access}`
-    }
+    client = privateAxiosClient({
+        baseURL: "blog/",
+    });
 
 
     async getPosts(page=1, title='', name='', uuid='', latest=true, tags='', popular=false){

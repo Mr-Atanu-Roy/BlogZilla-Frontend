@@ -3,11 +3,14 @@ import { useDispatch, useSelector } from "react-redux"
 import { Outlet } from "react-router-dom"
 import { useToast } from "@/components/ui/use-toast"
 
-import {getToken} from './utils/handelTokens'
 import {Header, Footer} from "./components/index"
 
-import {login as authLogin, logout as authLogout} from './store/features/authSlice'
-import { authService } from './service/index'
+import {login as authLogin} from './store/features/authSlice'
+import { 
+  useGetRefreshToken,
+  useRequestTokens,
+  useLogout,
+} from "./hooks/index"
 
 
 function App() {
@@ -23,25 +26,18 @@ function App() {
       try {
         if(authStatus) return; //if user is already logged in return
 
-        const token = getToken();
-        if (!token) return;
-
-        const response = await authService.getToken({refresh: token.refresh})
-        if(response.status != 200){
-          dispatch(authLogout())
+        const refreshToken = useGetRefreshToken();
+        const tokens = await useRequestTokens(refreshToken);
+        if(!tokens){ 
+          //if no refresh token logout & return
+          useLogout();
           return;
-        };
+        }
 
-        //update store after token is obtained
-        dispatch(authLogin(
-          {
-            access: response.access,
-            refresh: response.refresh
-          }
-        ))
+        dispatch(authLogin(tokens));
 
       } catch (error) {
-        dispatch(authLogout())
+        useLogout()
         toast({ variant: "destructive", title: 'Something went wrong.',})
       }finally{
         setLoading(false);

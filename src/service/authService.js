@@ -1,14 +1,11 @@
-import axios from "axios";
-import config from "../config/config";
+import {publicAxiosClient} from "./index";
 
 
 class AuthService{
 
-    client = axios.create();
-    constructor() {
-        this.client.defaults.headers.common['Content-Type'] = 'application/json';
-        this.client.defaults.baseURL = `${config.BASE_API_ENDPOINT}auth/`;
-    }
+    client = publicAxiosClient({
+        baseURL: "auth/",
+    });
 
     async createAccount({email, password}) {
         try {
@@ -124,6 +121,7 @@ class AuthService{
             
         } catch (error) {
             console.log("AUTH SERVICE :: GET TOKEN ERROR :: ", error.message )
+            console.log(error.response)
             return error.response;
         }
     }

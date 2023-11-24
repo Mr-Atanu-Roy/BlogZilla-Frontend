@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {saveToken, getToken, deleteToken} from '../../utils/handelTokens'
+import {saveToken, deleteToken} from '../../utils/handelTokens'
 
 import { jwtDecode } from "jwt-decode"
 
@@ -28,6 +28,13 @@ const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
+        setToken: (state, action)=>{
+            //saving token to store if user is logged in-->status=true
+            if(state.status){
+                state.userData.token = action.payload;
+                saveToken(action.payload.refresh)
+            }
+        },
         login: (state, action)=>{
             //saving token to store
             state.status = true;
@@ -38,8 +45,8 @@ const authSlice = createSlice({
             state.userData.uuid = decode_access.uuid;
             state.userData.name = `${(decode_access.first_name).trim() != '' ? decode_access.first_name : ''} ${(decode_access.last_name).trim() != '' ? decode_access.last_name : ''}`;
 
-            //saving token to local storage
-            saveToken(action.payload)
+            //saving refresh token to local storage
+            saveToken(action.payload.refresh)
         },
         logout: (state)=>{
             //deleting token from store
@@ -53,6 +60,6 @@ const authSlice = createSlice({
 })
 
 
-export const {login, logout} = authSlice.actions;
+export const {setToken, login, logout} = authSlice.actions;
 
 export default authSlice.reducer;

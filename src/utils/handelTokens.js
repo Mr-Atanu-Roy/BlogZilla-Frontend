@@ -1,14 +1,16 @@
+const KEY = "BlogZilla-tokens";
+
 //saves refresh token to local storage
 function saveToken(token){
     deleteToken()
     if(token){
-        localStorage.setItem("BlogZilla-tokens", JSON.stringify(token));
+        localStorage.setItem(KEY, JSON.stringify(token));
     }
 }
 
-//gets and returns token from local storage if exists
+//gets and returns refresh token from local storage if exists
 function getToken(){
-    const tokenString = localStorage.getItem("BlogZilla-tokens");
+    const tokenString = localStorage.getItem(KEY);
     if(tokenString){
         const token = JSON.parse(tokenString);
         return token;
@@ -17,9 +19,9 @@ function getToken(){
 }
 
 
-//deletes token from local storage
+//deletes refresh token from local storage
 function deleteToken(){
-    localStorage.removeItem("BlogZilla-tokens");
+    localStorage.removeItem(KEY);
 }
 
 export {saveToken, getToken, deleteToken}
