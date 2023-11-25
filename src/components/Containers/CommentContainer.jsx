@@ -37,7 +37,7 @@ function CommentContainer({
                 <Link to={`/author/${authorUUID}`}>
                 {
                     authorImg ?
-                    <img src={authorImg} alt={authorName} className='rounded-full w-9 h-9 object-center object-cover aspect-square' /> : 
+                    <img src={authorImg} alt={authorName} className='rounded-full w-10 h-9 object-center object-cover aspect-square' /> : 
                     <UserCircle className='w-9 h-9' />
                 }
                 </Link>

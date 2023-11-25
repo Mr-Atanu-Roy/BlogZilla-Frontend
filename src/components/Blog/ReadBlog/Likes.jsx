@@ -43,7 +43,7 @@ function Likes({className, width="7", height="7", blogUUID}) {
             
             try {
                 if(blogUUID){
-                    const response = await postService.getLikes(blogUUID);
+                    const response = await postService.getPostLikes(blogUUID);
                     if(response.status == 200){
                         setLike(response.results)
                         setLikes(response.count)
@@ -57,6 +57,7 @@ function Likes({className, width="7", height="7", blogUUID}) {
                     }
                 }             
             } catch (error) {
+                console.log(error)
               toast({ variant: "destructive", title: 'Something went wrong.',})
             }finally{
               setLoading(false);

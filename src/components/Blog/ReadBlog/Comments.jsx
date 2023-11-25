@@ -49,7 +49,7 @@ function Comments({className, width="7", height="7", blogUUID}) {
             
             try {
                 if(blogUUID){
-                    const response = await postService.getComments(blogUUID);
+                    const response = await postService.getPostComments(blogUUID);
                     if(response.status == 200){
                         setComment(response.results)
                         setComments(response.count)
