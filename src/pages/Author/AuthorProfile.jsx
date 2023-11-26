@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 
 import { peopleService } from '../../service/index'
 
-import { AuthorProfilePanel, AuthorTabs } from '../../components/index'
+import { AuthorProfilePanel, AuthorProfilePanelSkeleton, AuthorTabs } from '../../components/index'
 import { useToast } from '@/components/ui/use-toast'
 
 function AuthorProfile() {
@@ -50,7 +50,7 @@ function AuthorProfile() {
             <div className="sticky top-[104px] right-0">
             {
                 loading ? 
-                "Loading..." :
+                <AuthorProfilePanelSkeleton /> :
                 <AuthorProfilePanel
                     authorUUID={author?.uuid}
                     authorName={author.first_name + ' ' + author.last_name}

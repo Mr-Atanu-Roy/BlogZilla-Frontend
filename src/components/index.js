@@ -47,6 +47,7 @@ import BlogsPanel from "./Home/BlogsPanel";
 import TopAuthors from "./Home/TopAuthors";
 import TagsPanel from "./Home/TagsPanel";
 
+import AuthorProfilePanelSkeleton from "./Author/AuthorProfilePanelSkeleton";
 import AuthorProfilePanel from "./Author/AuthorProfilePanel";
 import AuthorTabs from "./Author/AuthorTabs";
 import Blogs from "./Author/Blogs";
@@ -107,6 +108,7 @@ export {
     TopAuthors,
     TagsPanel,
 
+    AuthorProfilePanelSkeleton,
     AuthorProfilePanel,
     AuthorTabs,
     Blogs,
