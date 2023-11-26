@@ -82,7 +82,7 @@ class UserService{
         }
     } 
 
-    async isFollowed(userUUID){
+    async isFollowing(userUUID){
 
         try{
             const response = await this.client.get(

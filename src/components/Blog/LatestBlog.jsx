@@ -2,38 +2,51 @@ import React, { useEffect, useState } from 'react'
 
 import { postService } from '../../service/index'
 import { useToast } from '@/components/ui/use-toast'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
-import { SectionContainer, FlexContainer, VerticalCard, VerticalCardSkeleton, HorizontalCard, NothingFound } from '../index'
+import {
+    SectionContainer,
+    FlexContainer,
+    VerticalCard,
+    VerticalCardSkeleton,
+    NothingFound,
+    Spinner,
+} from '../index'
 
 
 function LatestBlog() {
     const {toast} = useToast()
     const [loading, setLoading] = useState(false)
     const [posts, setPosts] = useState([])
+    const [page, setPage] = useState(1)
+    const [hasMore, setHasMore] = useState(true)
 
     useEffect(() => {
-
-        (async () => {
-
-            setLoading(true);
-            try {
-              
-                const response = await postService.getPosts();
-                if(response.status == 200){
-                    setPosts(response.results)
-                }else{
-                    toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
-                }
-
-            } catch (error) {
-              toast({ variant: "destructive", title: 'Something went wrong.',})
-            }finally{
-              setLoading(false);
-            }
-      
-          })();
-
+        setLoading(true);
+        setPage(1)
+        setHasMore(true)
+        setPosts([])
+        fetchData().finally(()=>setLoading(false))   
     }, []);
+
+
+    const fetchData = async () => {
+        try {
+            const response = await postService.getPosts(page);
+            if(response.status == 200){
+                setPosts((prevData)=>[...prevData, ...response.results])
+                if(response.next != null){
+                    setPage((prevPage)=>prevPage+1)
+                }else{
+                    setHasMore(false)
+                }
+            }else{
+                toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
+            }
+        } catch (error) {
+            toast({ variant: "destructive", title: 'Something went wrong.',})
+        }
+    }
 
 
   return (
@@ -41,48 +54,49 @@ function LatestBlog() {
         title="Latest Posts"
         description="Read the latest posts published by authors">
             
-        <FlexContainer>
+        
         {
             loading ? 
-            <>
+            <FlexContainer>
                 <VerticalCardSkeleton/>
                 <VerticalCardSkeleton/>
                 <VerticalCardSkeleton/>
-            </> :
+            </FlexContainer> :
             posts.length>0 ?
-                posts.map((item) => (
-                    <VerticalCard key={item.uuid}
-                    headerImg={item.header_img}
-                    authorImg={item.user.profile_pic}
-                    title={item.title}
-                    postUUID={item.uuid}
-                    author={`${item.user.first_name} ${item.user.last_name}`}
-                    authorUUID = {item.user.uuid}
-                    tag={item.tags_parsed[0]}
-                    likeCount={item.likes_no}
-                    commentCount={item.comments_no}
-                    date={item.created_at}
-                    />
-                )) :
-                <NothingFound
-                    description="Sorry no posts were found."
-                    buttonText="Go Home"
-                    buttonLink="/"
-                />
+            <InfiniteScroll 
+            dataLength={posts.length}
+            scrollableTarget="sheet-content"
+            next={fetchData}
+            hasMore={hasMore}
+            loader={<Spinner/>}>
+                <div className="overflow-y-hidden">
+                <FlexContainer>
+                {
+                    posts.map((item) => (
+                            <VerticalCard key={item.uuid}
+                            headerImg={item.header_img}
+                            authorImg={item.user.profile_pic}
+                            title={item.title}
+                            postUUID={item.uuid}
+                            author={`${item.user.first_name} ${item.user.last_name}`}
+                            authorUUID = {item.user.uuid}
+                            tag={item.tags_parsed[0]}
+                            likeCount={item.likes_no}
+                            commentCount={item.comments_no}
+                            date={item.created_at}
+                            />
+                    ))
+                }
+                </FlexContainer>
+                </div>
+            </InfiniteScroll> :
+            <NothingFound
+                description="Sorry no posts were found."
+                buttonText="Go Home"
+                buttonLink="/"
+            />
         }
-        </FlexContainer>
-
-            {/* <div className='px-20'>
-                <HorizontalCard 
-                    title="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum."
-                    author="John Doe"
-                    authorUUID="123"
-                    postUUID="123"
-                    tag="lorem"
-                    // authorImg="https://miro.medium.com/v2/resize:fill:250:168/1*M2Kg81dKdity7YM8n3s8Fg.jpeg"
-                    // postImg="https://miro.medium.com/v2/resize:fill:250:168/1*M2Kg81dKdity7YM8n3s8Fg.jpeg"
-                />
-            </div> */}
+        
     </SectionContainer>
   )
 }

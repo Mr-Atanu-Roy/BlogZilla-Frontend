@@ -1,14 +1,18 @@
-import React from 'react'
+import { cn } from "@/lib/utils"
+
 import { Link } from 'react-router-dom'
 
 function TagsBtn({className='', title}) {
+  
+  let px="px-2";
+  if(title && title.length < 7) px="px-3"
+  if(title && title.length < 4) px="px-3.5"
+
   return (
     <>
     {
         title &&
-        <div>
-            <Link to={`/post/tags/${title}`} className={`py-2.5 px-2 lowercase font-medium text-xs bg-gray-300 hover:bg-gray-400 transition-colors duration-200 ease-in-out rounded-md text-black ${className}`}>{title}</Link>
-        </div>
+        <Link to={`/post/tags/${title}`} className={cn(`py-2.5 m-1 ${px} lowercase font-medium text-xs bg-gray-300 hover:bg-gray-400 transition-colors duration-200 ease-in-out rounded-md text-black `, className)}>{title}</Link>
     }
     </>
   )

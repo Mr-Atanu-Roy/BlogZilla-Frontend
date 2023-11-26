@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
+import './styles.css'
 
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
@@ -16,7 +17,8 @@ import {
   WriteBlogs, ReadBlog, EditBlog,
   PageNotFound,
   ResetPassword, ResetPasswordRedirect,
-  EmailVerify, EmailVerifyRedirect
+  EmailVerify, EmailVerifyRedirect,
+  AuthorProfile,
 } from "./pages/index"
 
 
@@ -53,6 +55,24 @@ const router = createBrowserRouter([
           {
             path: "latest",
             element: <ListBlogs type="latest" />,
+          },
+          {
+            path: "tags/:tag",
+            element: <h1>Tags</h1>,
+          },
+        ]
+      },
+      {
+        path: "author/",
+        errorElement: <PageNotFound />,
+        children: [
+          {
+            path: ":uuid",
+            element: <AuthorProfile />,
+          },
+          {
+            path: "country/:country",
+            element: <h1>Author Country</h1>,
           },
         ]
       },

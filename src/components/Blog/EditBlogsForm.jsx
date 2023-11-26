@@ -54,7 +54,7 @@ function EditBlogsForm({blogUUID}) {
 
     const handelError = (errors) => {
         if(errors.title?.type == "required") toast({ variant: "destructive", title: 'Title is required',})
-        if(errors.title?.type == "minLength" || errors.title?.type == "maxLength") toast({ variant: "destructive", title: 'Title should be between 8 to 45 characters',})
+        if(errors.title?.type == "minLength" || errors.title?.type == "maxLength") toast({ variant: "destructive", title: 'Title should be between 8 to 120 characters',})
         
         if(errors.content?.type == "required") toast({ variant: "destructive", title: 'Post Content is required',})
         if(errors.content?.type == "minLength") toast({ variant: "destructive", title: 'Post Content must be more that 1500 characters',})
@@ -78,7 +78,7 @@ function EditBlogsForm({blogUUID}) {
                     <div className='mr-3'>
                         <Label htmlFor="title" className="flex items-center"><Subtitles className="w-4 h-4 mr-1" /> Post Title: </Label>
                         <Input type="text" placeholder="Give a post title" className="w-[350px]"
-                        {...register("title", {required: true, minLength: 8, maxLength: 45, pattern: /^[a-zA-Z0-9\s]+$/})}
+                        {...register("title", {required: true, minLength: 8, maxLength: 120})}
                         />
                     </div>
                     <div className='ml-3'>

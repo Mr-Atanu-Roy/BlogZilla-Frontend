@@ -31,7 +31,9 @@ function VerticalCardSkeleton({
                 </CardDescription>
             </CardHeader>
             <CardContent className="pl-0 pr-2 mt-6">
-                <Skeleton className="w-full h-10"/>
+                <Skeleton className="h-4 w-full mb-1.5" />
+                <Skeleton className="h-4 w-10/12 mb-1.5" />
+                <Skeleton className="h-4 w-11/12 mb-1.5" />
             </CardContent>
             <CardFooter className="px-1 flex items-end justify-between text-sm font-medium text-gray-500">
                 <div className='flex'>

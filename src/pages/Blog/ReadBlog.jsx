@@ -52,7 +52,7 @@ function ReadBlog() {
               title={content.title}
               headerImg={content.header_img}
               authorUUID={content.user?.uuid}
-              authCountry={content.user?.country}
+              authorCountry={content.user?.country}
               authorImg={content.user?.profile_pic}
               author={content.user?.first_name + " " + content.user?.last_name}
               likes={content.likes_no}

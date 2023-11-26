@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 
 import { postService } from '../../service/index'
 import {useAPIErrors} from '../../hooks/index'
@@ -26,8 +26,9 @@ function WriteBlogsForm() {
   const watchPicture = watch('picture') //TODO: add the picture preview
 
   const handelError = (errors) => {
+    console.log(errors)
     if(errors.title?.type == "required") toast({ variant: "destructive", title: 'Title is required',})
-    if(errors.title?.type == "minLength" || errors.title?.type == "maxLength") toast({ variant: "destructive", title: 'Title should be between 8 to 45 characters',})
+    if(errors.title?.type == "minLength" || errors.title?.type == "maxLength") toast({ variant: "destructive", title: 'Title should be between 8 to 120 characters',})
     
     if(errors.picture?.type == "required") toast({ variant: "destructive", title: 'Picture is required',})
     
@@ -67,6 +68,7 @@ function WriteBlogsForm() {
           toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
       }        
     }catch(errors){
+      console.log(errors)
       toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
     }finally{
       setLoading(false)
@@ -110,7 +112,7 @@ function WriteBlogsForm() {
             <div className='mr-3'>
               <Label htmlFor="title" className="flex items-center"><Subtitles className="w-4 h-4 mr-1" /> Post Title: </Label>
               <Input type="text" placeholder="Give a post title" className="w-[350px]"
-                {...register("title", {required: true, minLength: 8, maxLength: 45, pattern: /^[a-zA-Z0-9\s]+$/})}
+                {...register("title", {required: true, minLength: 8, maxLength: 120})}
               />
             </div>
             <div className='ml-3'>
@@ -127,7 +129,7 @@ function WriteBlogsForm() {
         <div className='mb-2.5 px-1.5 flex items-center justify-between'>
             <Label htmlFor="title" className="flex items-center"><FileText className="w-4 h-4 mr-1" /> Write Your Post: </Label>
         </div>
-        <TextEditor name="content" height="620px" width="880px" minLength={1500} control={control} required={true} defaultValue='' />
+        <TextEditor name="content" height="720px" width="880px" minLength={1500} control={control} required={true} defaultValue='' />
       </div>
 
       <div className='flex items-center justify-evenly w-full mt-10'>

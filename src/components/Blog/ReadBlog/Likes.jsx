@@ -35,44 +35,22 @@ function Likes({className, width="7", height="7", blogUUID}) {
 
     useEffect(() => {
 
-        (async () => {
-
-            setLoading(true);
-            setPage(1);
-            setLike([]);
-            
-            try {
-                if(blogUUID){
-                    const response = await postService.getPostLikes(blogUUID);
-                    if(response.status == 200){
-                        setLike(response.results)
-                        setLikes(response.count)
-                        if(response.next != null){
-                            setPage((prevPage)=>prevPage+1)
-                        }else{
-                            setHasMore(false)
-                        }
-                    }else{
-                        toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
-                    }
-                }             
-            } catch (error) {
-                console.log(error)
-              toast({ variant: "destructive", title: 'Something went wrong.',})
-            }finally{
-              setLoading(false);
-            }
-      
-          })();
+        setLoading(true)
+        setPage(1)
+        setHasMore(true)
+        setLike([])
+        fetchData().finally(()=>setLoading(false))
 
     }, [blogUUID]);
 
     
-    const fetchNext = async () => {
+    const fetchData = async () => {
         try {
-            const response = await postService.getLikes(blogUUID, page);
+            if(!blogUUID) return;
+            const response = await postService.getPostLikes(blogUUID, page);
             if(response.status == 200){
                 setLike((prevComment)=>[...prevComment, ...response.results])
+                setLikes(response.count)
                 if(response.next != null){
                     setPage((prevPage)=>prevPage+1)
                 }else{
@@ -140,7 +118,7 @@ function Likes({className, width="7", height="7", blogUUID}) {
                         <InfiniteScroll 
                         dataLength={like.length}
                         scrollableTarget="sheet-content"
-                        next={fetchNext}
+                        next={fetchData}
                         hasMore={hasMore}
                         loader={<Spinner/>}>
                         <div className='overflow-y-hidden'>

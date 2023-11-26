@@ -33,7 +33,7 @@ function VerticalCard({
 
     if(tag) tag = tag.toLowerCase()
 
-    if(title && title.length>60) title = title.slice(0,60)+"...."
+    if(title && title.length>58) title = title.slice(0,55)+"...."
 
     return (
         <Card className={`w-[${width}] h-[400px] m-10 p-0 border-none shadow-none flex flex-col justify-between`}>
@@ -86,5 +86,4 @@ function VerticalCard({
         </Card>
     )
 }
-
 export default VerticalCard

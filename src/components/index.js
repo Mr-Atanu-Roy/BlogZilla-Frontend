@@ -18,9 +18,10 @@ import HorizontalCard from "./Containers/HorizontalCard";
 import VerticalCard from "./Containers/VerticalCard";
 import VerticalCardSkeleton from "./Containers/VerticalCardSkeleton";
 import HorizontalCardSkeleton from "./Containers/HorizontalCardSkeleton";
+import BlurCardContainer from "./Containers/BlurCardContainer";
+import BlurCardContainerSkeleton from "./Containers/BlurCardContainerSkeleton";
 import NothingFound from "./Containers/NothingFound";
 import FollowBtn from "./Btns/FollowBtn";
-import UnfollowBtn from "./Btns/UnfollowBtn";
 import AddBookMark from "./Btns/AddBookMark";
 import RemoveBookMark from "./Btns/RemoveBookMark";
 import ShareBtn from "./Btns/ShareBtn";
@@ -38,6 +39,19 @@ import CommentContainer from "./Containers/CommentContainer";
 import LikesContainer from "./Containers/LikesContainer";
 import CommentContainerSkeleton from "./Containers/CommentContainerSkeleton";
 import LikesContainerSkeleton from "./Containers/LikesContainerSkeleton";
+import AuthorCardContainer from "./Containers/AuthorCardContainer";
+import AuthorCardContainerSkeleton from "./Containers/AuthorCardContainerSkeleton";
+
+import MainSlider from "./Home/MainSlider";
+import BlogsPanel from "./Home/BlogsPanel";
+import TopAuthors from "./Home/TopAuthors";
+import TagsPanel from "./Home/TagsPanel";
+
+import AuthorProfilePanel from "./Author/AuthorProfilePanel";
+import AuthorTabs from "./Author/AuthorTabs";
+import Blogs from "./Author/Blogs";
+import Following from "./Author/Following";
+import Followers from "./Author/Followers";
 
 export {
     Logo,
@@ -63,10 +77,14 @@ export {
     VerticalCard,
     VerticalCardSkeleton,
     HorizontalCardSkeleton,
+    BlurCardContainer,
     CommentContainer,
     LikesContainer,
     CommentContainerSkeleton,
     LikesContainerSkeleton,
+    BlurCardContainerSkeleton,
+    AuthorCardContainer,
+    AuthorCardContainerSkeleton,
 
     ContentHead,
     ContentBody,
@@ -78,12 +96,22 @@ export {
     Likes,
 
     FollowBtn,
-    UnfollowBtn, 
     AddBookMark,
     RemoveBookMark,
     ShareBtn,
     TagsBtn,
     EditPostBtn,
+
+    MainSlider,
+    BlogsPanel,
+    TopAuthors,
+    TagsPanel,
+
+    AuthorProfilePanel,
+    AuthorTabs,
+    Blogs,
+    Following,
+    Followers,
     
     NothingFound,
 }

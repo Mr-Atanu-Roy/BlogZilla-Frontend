@@ -22,12 +22,12 @@ function LikesContainer({
                 <UserCircle className='w-9 h-9' />
             }
             </Link>
-            <div className="w-full">
-                <div className='w-full flex items-start justify-between'>
+            <div className='w-full flex items-start justify-between'>
+                <div>
                     <Link to={`/author/${authorUUID}`} className="font-medium text-base text-black">{authorName}</Link>
-                    <FollowBtn className="rounded-full" authorUUID={authorUUID} />
+                    <p className="text-xs text-gray-400 relative">{date}</p>
                 </div>
-                <p className="text-xs text-gray-400 relative -top-2">{date}</p>
+                <FollowBtn className="rounded-full" authorUUID={authorUUID} />
             </div>
         </div>
     )

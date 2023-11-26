@@ -38,47 +38,22 @@ function Comments({className, width="7", height="7", blogUUID}) {
     const [page, setPage] = useState(1) //holds the page number
     const [hasMore, setHasMore] = useState(true) //holds bool value of whether more data is available or not
 
-
     
     useEffect(() => {
-
-        (async () => {
-            setLoading(true);
-            setPage(1);
-            setComment([]);
-            
-            try {
-                if(blogUUID){
-                    const response = await postService.getPostComments(blogUUID);
-                    if(response.status == 200){
-                        setComment(response.results)
-                        setComments(response.count)
-                        if(response.next != null){
-                            setPage((prevPage)=>prevPage+1)
-                        }else{
-                            setHasMore(false)
-                        }
-                    }else{
-                        toast({ variant: "destructive", title: "Something went wrong. Please try again later.".toUpperCase(),})
-                    }
-                }
-              
-
-            } catch (error) {
-              toast({ variant: "destructive", title: 'Something went wrong.',})
-            }finally{
-              setLoading(false);
-            }
-      
-          })();
-
+        setLoading(true)
+        setPage(1)
+        setHasMore(true)
+        setComment([])
+        fetchData().finally(()=>setLoading(false))
     }, [blogUUID]);
     
 
-    const fetchNext = async () => {
+    const fetchData = async () => {
         try {
-            const response = await postService.getComments(blogUUID, page);
+            if(!blogUUID) return;
+            const response = await postService.getPostComments(blogUUID, page);
             if(response.status == 200){
+                setComments(response.count)
                 setComment((prevComment)=>[...prevComment, ...response.results])
                 if(response.next != null){
                     setPage((prevPage)=>prevPage+1)
@@ -139,7 +114,7 @@ function Comments({className, width="7", height="7", blogUUID}) {
                         <InfiniteScroll 
                         dataLength={comment.length}
                         scrollableTarget="sheet-content"
-                        next={fetchNext}
+                        next={fetchData}
                         hasMore={hasMore}
                         loader={<Spinner/>}>
                         <div className='overflow-y-hidden'>

@@ -10,19 +10,19 @@ class PostService{
     });
 
 
-    async getPosts(page=1, title='', name='', uuid='', latest=true, tags='', popular=false){
+    async getPosts(page=1, title='', user='', name='', latest=true, tags='', popular=false){
         try {
             const response = await this.publicClient.get(
                 "",
                 {
-                    params: {title, name, uuid, latest, tags, popular, page}
+                    params: {title, user, name, latest, tags, popular, page}
                 }
             );
 
             return {...response.data, status: response.status};
             
         } catch (error) {
-            console.log("POST SERVICE :: GET POSTS ERROR :: ", error.message )
+            console.log("POST SERVICE :: GET POSTS ERROR :: ", error.message)
             return error.response;
         }
     }
@@ -101,7 +101,6 @@ class PostService{
             return {...response.data, status: response.status};
             
         } catch (error) {
-            
             console.log("POST SERVICE :: GET COMMENTS ERROR :: ", error.message )
             return error.response;
         }

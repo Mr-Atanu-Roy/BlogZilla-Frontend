@@ -4,8 +4,16 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { useLocation } from 'react-router-dom';
 
-import { EditPostBtn, FollowBtn, UnfollowBtn, AddBookMark, RemoveBookMark, ShareBtn, Comments, Likes } from '../../index'
-import { MessageCircle, ThumbsUp, UserCircle, MapPin} from 'lucide-react'
+import { 
+  EditPostBtn,
+  FollowBtn,
+  AddBookMark,
+  RemoveBookMark,
+  ShareBtn,
+  Comments,
+  Likes 
+} from '../../index'
+import { UserCircle, MapPin} from 'lucide-react'
 
 import handelDate from '../../../utils/handelDate'
 
@@ -17,7 +25,6 @@ function ContentHead({
     date
 
   }) {
-
     if(date){
       const getDate = handelDate(date)
       date = `${getDate.day}.${getDate.month}.${getDate.year}`
@@ -43,17 +50,20 @@ function ContentHead({
               <div className='flex flex-col ml-1.5'>
                   {
                     authorCountry &&
-                    <Link to="/" className="flex items-center">
-                        <MapPin className='w-4 h-5'/>
-                        <span className='text-sm'>Canada</span>
+                    <Link to={`/author/${authorCountry}`} className="flex items-center">
+                        <MapPin className='w-4 h-5 ml-1'/>
+                        <span className='text-sm'>{authorCountry}</span>
                     </Link>
                   }
                   <Link to={`/author/${authorUUID}`} className="font-medium ml-2">{author}</Link>
               </div>
             </div>
+            {
+            userUUID != authorUUID &&
             <div>
                 <FollowBtn authorUUID={authorUUID} />
             </div>
+            }
         </div>
         <div className='flex w-full items-center justify-between'>
           <div className='flex items-center justify-start'>

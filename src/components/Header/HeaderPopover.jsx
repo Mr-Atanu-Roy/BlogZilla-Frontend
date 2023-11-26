@@ -12,13 +12,15 @@ import {
 } from "@/components/ui/popover"
 import { useToast } from "@/components/ui/use-toast"
 
-import { UserCircle2, LogOut, BookUser } from "lucide-react"
+import { UserCircle2, LogOut, BookUser, UserCheck } from "lucide-react"
 
 function HeaderPopover() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const {toast} = useToast()
-    const userName = useSelector((state) => state.auth.userData.name)
+    const user = useSelector((state) => state.auth) || null
+    const userName = user?.userData.name
+    const userUUID = user?.userData.uuid
 
     const handelLogout = (e) => {
         e.preventDefault()
@@ -29,9 +31,14 @@ function HeaderPopover() {
 
     const userLinks = [
         {
-          icon: <BookUser className="w-4 h-4 mr-1" />,
-          title: "Dashboard",
+          icon: <BookUser className="w-4 h-4 mr-1.5" />,
+          title: "dashboard",
           href: "/dashboard",
+        },
+        {
+          icon: <UserCheck className="w-4 h-4 mr-1.5" />,
+          title: "public profile",
+          href: `/author/${userUUID}`,
         },
     ]
       
@@ -43,12 +50,12 @@ function HeaderPopover() {
         <PopoverContent className="mr-3 mt-6">
         {userLinks.map((component) => (
             // TODO: change to Link
-            <Link to="/dashboard" className="flex select-none text-sm font-medium space-y-1 rounded-md p-3 mx-1 cursor-pointer leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground" key={component.title}>
+            <Link to={component.href} className="capitalize flex select-none text-sm font-medium space-y-1 rounded-md p-3 mx-1 cursor-pointer leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground" key={component.title}>
               {component.icon} {component.title}
             </Link>
           ))}
             <div onClick={handelLogout} className="flex select-none text-sm font-medium space-y-1 rounded-md p-3 mx-1 cursor-pointer leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-              <LogOut className="w-4 h-4 mr-1" /> Logout
+              <LogOut className="w-4 h-4 mr-1.5" /> Logout
             </div>
           
         </PopoverContent>

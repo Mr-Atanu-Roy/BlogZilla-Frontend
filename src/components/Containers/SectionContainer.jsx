@@ -1,4 +1,4 @@
-import React from 'react'
+import { cn } from "@/lib/utils"
 
 function SectionContainer({
     sectionClass,
@@ -7,11 +7,11 @@ function SectionContainer({
     description,
     }) {
     return (
-        <section className={`my-8 ${sectionClass}`}>
+        <section className={cn('my-8 ', sectionClass)}>
             {
                 title &&
                 <div className='text-center w-full'>
-                    <h2 className={`font-medium text-4xl`}>{title}</h2>
+                    <h2 className={`font-bold text-4xl`}>{title}</h2>
                     {
                         description &&
                         <p className='text-gray-400 mt-2'>{description}</p>

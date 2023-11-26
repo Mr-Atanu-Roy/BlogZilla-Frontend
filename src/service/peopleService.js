@@ -6,12 +6,12 @@ class PeopleService{
         baseURL: "people/",
     });
 
-    async getPeople(page=1, name='', country=''){
+    async getPeople(page=1, name='', country='', popular="true"){
         try{
             const response = await this.client.get(
                 "",
                 {
-                    params: {page, name, country}
+                    params: {page, name, country, popular}
                 }
             );
             return {...response.data, status: response.status};
@@ -24,7 +24,7 @@ class PeopleService{
     async profile(userUUID){
         try{
             const response = await this.client.get(
-                `${userUUID}/`,
+                `${userUUID}`,
             );
             return {...response.data, status: response.status};
         }catch(error){
@@ -36,7 +36,7 @@ class PeopleService{
     async following(userUUID, page=1){
         try{
             const response = await this.client.get(
-                `following/${userUUID}/`,
+                `following/${userUUID}`,
                 {
                     params: {page}
                 }
@@ -51,7 +51,7 @@ class PeopleService{
     async followers(userUUID, page=1){
         try{
             const response = await this.client.get(
-                `followers/${userUUID}/`,
+                `followers/${userUUID}`,
                 {
                     params: {page}
                 }

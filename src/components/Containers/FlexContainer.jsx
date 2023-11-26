@@ -1,17 +1,11 @@
-import React from 'react'
+import { cn } from "@/lib/utils"
 
 function FlexContainer({
     children,
-    flexDirection = "row",
-    flexWrap = "wrap", 
-    justifyContent = "evenly",
-    alignItems = "center",
-    mt,
-    py,
-    px,
+    className='',
     }) {
     return (
-        <div className={`${mt ? 'mt-'+mt : 'mt-8'} flex flex-${flexDirection=="col" ? "col" : "row"} flex-${flexWrap=="nowrap" ? "nowrap" : "wrap"} items-${alignItems} justify-${justifyContent} ${px ? 'px-'+px : 'px-24'} ${py ? 'py-'+py : 'py-4'}`}>
+        <div className={cn('mt-8 flex flex-wrap items-center justify-evenly px-24 py-4 ', className)}>
             {children}
         </div>
     )

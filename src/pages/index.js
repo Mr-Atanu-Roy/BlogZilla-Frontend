@@ -9,6 +9,7 @@ import ResetPasswordRedirect from "./auth/ResetPasswordRedirect";
 import ListBlogs from "./Blog/ListBlogs"
 import ReadBlog from "./Blog/ReadBlog"
 import EditBlog from "./Blog/EditBlog";
+import AuthorProfile from "./Author/AuthorProfile";
 
 export {
     Home,
@@ -22,4 +23,5 @@ export {
     ListBlogs,
     ReadBlog,
     EditBlog,
+    AuthorProfile,
 }
