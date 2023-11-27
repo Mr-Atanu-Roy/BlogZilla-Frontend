@@ -11,6 +11,7 @@ Backend available at: [BlogZilla Backend](https://github.com/Mr-Atanu-Roy/BlogZi
 **UI:** ShadCN, TailwindCSS, Lucid React, Swiper JS
 
 
+
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file (check the `.env.sample` file)
