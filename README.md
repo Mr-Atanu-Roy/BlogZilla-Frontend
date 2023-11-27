@@ -7,10 +7,11 @@ Backend available at: [BlogZilla Backend](https://github.com/Mr-Atanu-Roy/BlogZi
 ## Tech Stack
 
 **Framework & Language:** JS, React JS, Redux Tool Kit 
+
 **UI:** ShadCN, TailwindCSS, Lucid React, Swiper JS
 
 
-##Environment Variables
+## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file (check the `.env.sample` file)
 
