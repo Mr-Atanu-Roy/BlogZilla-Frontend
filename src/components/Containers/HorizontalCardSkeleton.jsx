@@ -21,7 +21,7 @@ function HorizontalCardSkeleton({
                 <Skeleton className="h-12 w-12 rounded-full" />
                 <Skeleton className="h-4 w-28 ml-2" />
             </div>
-            <div className="mt-3 w-full">
+            <div className={`mt-3 w-full ${rating ? '' : 'relative -top-5'}`}>
                 <Skeleton className="h-4 w-11/12 mb-1" />
                 <Skeleton className="h-4 w-10/12 mb-1" />
             </div>
