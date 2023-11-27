@@ -17,7 +17,9 @@ Backend available at: [BlogZilla Backend](https://github.com/Mr-Atanu-Roy/BlogZi
 To run this project, you will need to add the following environment variables to your .env file (check the `.env.sample` file)
 
 - API Endpoint settings:
+
 `VITE_BASE_API_ENDPOINT = "http://localhost:8000/api/"`
+
 `VITE_REFRESH_TOKEN_ENDPOINT = "http://localhost:8000/api/auth/token/"`
 
 use this settings as defined for using the custom backend mentioned above.
