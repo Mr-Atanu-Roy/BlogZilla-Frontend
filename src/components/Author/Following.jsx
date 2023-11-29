@@ -18,10 +18,10 @@ function Following({authorUUID}) {
     setPage(1)
     setHasMore(false)
     setData([])
-    fetchBlogs().finally(()=>setLoading(false))
+    fetchData().finally(()=>setLoading(false))
   }, [authorUUID])
 
-  const fetchBlogs = async () => {
+  const fetchData = async () => {
       try {
         const response = await peopleService.following(authorUUID, page);
         if(response.status == 200){
@@ -56,7 +56,7 @@ function Following({authorUUID}) {
           <InfiniteScroll 
           dataLength={data.length}
           scrollableTarget="sheet-content"
-          next={fetchBlogs}
+          next={fetchData}
           hasMore={hasMore}
           loader={<Spinner/>}>
             <div className='overflow-y-hidden'>

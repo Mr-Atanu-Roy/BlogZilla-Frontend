@@ -21,6 +21,14 @@ import {
   AuthorProfile,
 } from "./pages/index"
 
+import {
+  DashboardHome,
+  DashboardFollowers,
+  DashboardFollowing,
+  DashboardBlogs,
+  DashboardSettings,
+} from "./components/index"
+
 
 const router = createBrowserRouter([
   {
@@ -33,8 +41,31 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "dashboard",
+        path: "dashboard/",
         element: <Dashboard />,
+        errorElement: <PageNotFound />,
+        children: [
+          {
+            path: "",
+            element: <DashboardHome />,
+          },
+          {
+            path: "followers/",
+            element: <DashboardFollowers />,
+          },
+          {
+            path: "following/",
+            element: <DashboardFollowing />,
+          },
+          {
+            path: "blogs/",
+            element: <DashboardBlogs />,
+          },
+          {
+            path: "settings/",
+            element: <DashboardSettings />,
+          },
+        ],
       },
       {
         path: "post/",

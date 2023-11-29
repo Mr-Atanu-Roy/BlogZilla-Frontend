@@ -56,6 +56,13 @@ import Blogs from "./Author/Blogs";
 import Following from "./Author/Following";
 import Followers from "./Author/Followers";
 
+import SideNav from "./Dashboard/SideNav";
+import DashboardHome from "./Dashboard/Home";
+import DashboardFollowing from "./Dashboard/Following";
+import DashboardFollowers from "./Dashboard/Followers";
+import DashboardBlogs from "./Dashboard/Blogs";
+import DashboardSettings from "./Dashboard/Settings";
+
 export {
     Logo,
     Login,
@@ -118,6 +125,13 @@ export {
     Blogs,
     Following,
     Followers,
+
+    SideNav,
+    DashboardHome,
+    DashboardFollowing,
+    DashboardFollowers,
+    DashboardBlogs,
+    DashboardSettings,
     
     NothingFound,
 }

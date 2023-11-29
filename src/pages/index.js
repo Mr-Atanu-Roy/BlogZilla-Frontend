@@ -1,5 +1,5 @@
 import Home from "./Home";
-import Dashboard from "./auth/Dashboard";
+import Dashboard from "./Dashboard";
 import WriteBlogs from "./Blog/WriteBlogs";
 import PageNotFound from "./404Page";
 import ResetPassword from "./auth/ResetPassword";
