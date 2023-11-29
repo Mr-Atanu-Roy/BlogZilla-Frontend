@@ -10,6 +10,8 @@ import { Toaster } from "@/components/ui/toaster"
 
 import App from './App'
 import AuthApp from './AuthApp'
+import AuthLayout from './AuthLayout'
+
 import {
   Home,
   Dashboard,
@@ -42,7 +44,7 @@ const router = createBrowserRouter([
       },
       {
         path: "dashboard/",
-        element: <Dashboard />,
+        element: <AuthLayout authentication={true}> <Dashboard /> </AuthLayout>,
         errorElement: <PageNotFound />,
         children: [
           {
@@ -77,11 +79,11 @@ const router = createBrowserRouter([
           },
           {
             path: "write",
-            element: <WriteBlogs />,
+            element: <AuthLayout authentication={true}> <WriteBlogs /> </AuthLayout>,
           },
           {
             path: "edit/:uuid",
-            element: <EditBlog />,
+            element: <AuthLayout authentication={true}> <EditBlog /> </AuthLayout>,
           },
           {
             path: "latest",
@@ -116,7 +118,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/auth/",
-    element: <AuthApp />,
+    element: <AuthLayout authentication={false}> <AuthApp /> </AuthLayout>,
     errorElement: <PageNotFound />,
     children: [
       {
