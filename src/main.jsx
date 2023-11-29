@@ -57,6 +57,10 @@ const router = createBrowserRouter([
             element: <ListBlogs type="latest" />,
           },
           {
+            path: "popular",
+            element: <ListBlogs type="popular" />,
+          },
+          {
             path: "tags/:tag",
             element: <ListBlogs type="tags" />,
           },

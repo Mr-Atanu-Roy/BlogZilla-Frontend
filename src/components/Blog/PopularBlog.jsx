@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 
-import { useParams } from 'react-router-dom'
 import { postService } from '../../service/index'
 
 import { useToast } from '@/components/ui/use-toast'
@@ -15,11 +14,8 @@ import {
     Spinner,
 } from '../index'
 
+function PopularBlog() {
 
-function BlogsByTag() {
-
-    const { tag } = useParams()
-    
     const {toast} = useToast()
     const [loading, setLoading] = useState(false)
     const [posts, setPosts] = useState([])
@@ -36,7 +32,8 @@ function BlogsByTag() {
 
     const fetchData = async () => {
         try {
-            const response = await postService.getPosts(page, '', '', '', true, tag.toLowerCase());
+            const response = await postService.getPosts(page, '', '', '', true, '', true);
+            console.log(response)
             if(response.status == 200){
                 setPosts((prevData)=>[...prevData, ...response.results])
                 if(response.next != null){
@@ -52,11 +49,10 @@ function BlogsByTag() {
         }
     }
 
-
     return (
         <SectionContainer
-        title={tag.toUpperCase()}
-        description={`Read the latest posts published by authors related to ${tag.toUpperCase()}`}>
+        title="Popular Posts"
+        description={`Read the most popular posts published by authors`}>
             
         
         {
@@ -105,4 +101,4 @@ function BlogsByTag() {
     )
 }
 
-export default BlogsByTag
+export default PopularBlog

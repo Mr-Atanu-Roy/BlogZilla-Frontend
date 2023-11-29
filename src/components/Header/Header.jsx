@@ -15,8 +15,12 @@ function Header() {
       link: "/",
     },
     {
-      title: "Latest Posts",
+      title: "Latest",
       link: "post/latest/",
+    },
+    {
+      title: "popular",
+      link: "post/popular/",
     },
     {
       title: "Write",
@@ -40,7 +44,7 @@ function Header() {
 
       <div className="flex relative -left-24">
         {navLinks.map((component) => (
-            <Link to={component.link} className="block select-none font-medium space-y-1 rounded-md p-3 mx-1 cursor-pointer leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground" key={component.title}>
+            <Link to={component.link} className="capitalize block select-none font-medium space-y-1 rounded-md p-3 mx-1 cursor-pointer leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground" key={component.title}>
               {component.title}
             </Link>
         ))}

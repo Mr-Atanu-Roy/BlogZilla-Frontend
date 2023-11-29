@@ -12,6 +12,7 @@ import EditBlogsForm from "./Blog/EditBlogsForm";
 import TextEditor from "./Blog/TextEditor";
 import TagsController from "./Blog/TagsController";
 import LatestBlog from "./Blog/LatestBlog";
+import PopularBlog from "./Blog/PopularBlog";
 import BlogsByTag from "./Blog/BlogsByTag";
 import SectionContainer from "./Containers/SectionContainer";
 import FlexContainer from "./Containers/FlexContainer";
@@ -72,6 +73,7 @@ export {
     TextEditor,
     TagsController,
     LatestBlog,
+    PopularBlog,
     BlogsByTag,
 
     SectionContainer,
