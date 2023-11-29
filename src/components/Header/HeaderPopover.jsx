@@ -6,10 +6,11 @@ import { useDispatch } from 'react-redux'
 import {logout as authLogout} from '../../store/features/authSlice'
 
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { useToast } from "@/components/ui/use-toast"
 
 import { UserCircle2, LogOut, BookUser, UserCheck } from "lucide-react"
@@ -43,23 +44,21 @@ function HeaderPopover() {
     ]
       
   return (
-    <Popover>
-        <PopoverTrigger className="flex hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer py-2.5 px-3.5 rounded-md">
-          <UserCircle2 className="h-6 w-6"/> <span className='ml-1 font-medium'>{userName}</span>
-        </PopoverTrigger>
-        <PopoverContent className="mr-3 mt-6">
-        {userLinks.map((component) => (
-            // TODO: change to Link
-            <Link to={component.href} className="capitalize flex select-none text-sm font-medium space-y-1 rounded-md p-3 mx-1 cursor-pointer leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground" key={component.title}>
-              {component.icon} {component.title}
+    <DropdownMenu>
+      <DropdownMenuTrigger className='border-none order-none focus:border-none focus:outline-none flex hover:bg-accent hover:text-accent-foreground cursor-pointer py-2.5 px-3.5 rounded-md'>
+        <UserCircle2 className="h-6 w-6"/> <span className='ml-1 font-medium'>{userName}</span>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="mt-6 mr-5 w-[245px] px-3 py-3.5">
+          {userLinks.map((component) => (
+            <Link to={component.href} className="capitalize flex select-none text-sm font-medium space-y-1 rounded-md py-1 mx-1 cursor-pointer leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground" key={component.title}>
+              <DropdownMenuItem className="flex items-center cursor-pointer">{component.icon} {component.title}</DropdownMenuItem>
             </Link>
           ))}
-            <div onClick={handelLogout} className="flex select-none text-sm font-medium space-y-1 rounded-md p-3 mx-1 cursor-pointer leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+          <DropdownMenuItem onClick={handelLogout} className="flex select-none text-sm font-medium space-y-1 rounded-md p-3 mx-1 cursor-pointer leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground">
               <LogOut className="w-4 h-4 mr-1.5" /> Logout
-            </div>
-          
-        </PopoverContent>
-    </Popover>
+          </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 
