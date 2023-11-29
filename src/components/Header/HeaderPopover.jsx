@@ -48,7 +48,7 @@ function HeaderPopover() {
       <DropdownMenuTrigger className='border-none order-none focus:border-none focus:outline-none flex hover:bg-accent hover:text-accent-foreground cursor-pointer py-2.5 px-3.5 rounded-md'>
         <UserCircle2 className="h-6 w-6"/> <span className='ml-1 font-medium'>{userName}</span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="mt-6 mr-5 w-[245px] px-3 py-3.5">
+      <DropdownMenuContent className="mt-6 mr-1 w-[245px] px-3 py-3.5">
           {userLinks.map((component) => (
             <Link to={component.href} className="capitalize flex select-none text-sm font-medium space-y-1 rounded-md py-1 mx-1 cursor-pointer leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground" key={component.title}>
               <DropdownMenuItem className="flex items-center cursor-pointer">{component.icon} {component.title}</DropdownMenuItem>
