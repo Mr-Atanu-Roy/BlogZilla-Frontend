@@ -10,7 +10,7 @@ import { UserCircle2, UserCheck, Snail, Settings } from 'lucide-react'
 function SideNav() {
   
   const user = useSelector((state) => state.auth) || null
-  const userName = user?.userData.name
+  const userName = user?.userData?.user
 
   const navItems = [
     {
