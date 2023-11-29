@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button"
 
 function CommentContainer({
     authorName, authorImg, authorUUID,
-    comment, commentUUD,
+    comment, commentUUID,
     commentLikes, commentReplies,
     date
 

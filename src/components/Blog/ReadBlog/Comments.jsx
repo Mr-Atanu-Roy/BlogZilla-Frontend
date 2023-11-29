@@ -124,7 +124,7 @@ function Comments({className, width="7", height="7", blogUUID}) {
                                 authorUUID={item.user?.uuid}
                                 authorName={item.user?.first_name+" "+item.user?.last_name}
                                 authorImg={item.user?.profile_pic}
-                                commentUUD={item.uuid}
+                                commentUUID={item.uuid}
                                 comment={item.comment}
                                 date={item.created_at}
                                 commentReplies={item.comments_no}
