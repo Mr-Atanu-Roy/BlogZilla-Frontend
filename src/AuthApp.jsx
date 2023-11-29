@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom"
+import { Outlet, ScrollRestoration } from "react-router-dom"
 
 function AuthApp() {
   
@@ -7,6 +7,7 @@ function AuthApp() {
     <section className="w-full h-screen bg-gray-100 flex items-center justify-center">
         <Outlet />
     </section>
+    <ScrollRestoration />
     </>
   )
 }

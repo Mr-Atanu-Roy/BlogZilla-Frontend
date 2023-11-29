@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Outlet } from "react-router-dom"
+import { Outlet, ScrollRestoration } from "react-router-dom"
 import { useToast } from "@/components/ui/use-toast"
 
 import {Header, Footer} from "./components/index"
@@ -58,6 +58,7 @@ function App() {
         <Footer />
       </>
     }
+    <ScrollRestoration />
     </>
   )
 }
