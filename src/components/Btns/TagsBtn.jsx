@@ -12,7 +12,7 @@ function TagsBtn({className='', title}) {
     <>
     {
         title &&
-        <Link to={`/post/tags/${title}`} className={cn(`py-2.5 m-1 ${px} lowercase font-medium text-xs bg-gray-300 hover:bg-gray-400 transition-colors duration-200 ease-in-out rounded-md text-black `, className)}>{title}</Link>
+        <Link to={`/post/tags/${title}`} className={cn(`py-2.5 m-1 ${px} lowercase font-medium text-xs bg-muted hover:bg-gray-200 transition-colors duration-200 ease-in-out rounded-md text-black `, className)}>{title}</Link>
     }
     </>
   )
