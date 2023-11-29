@@ -1,11 +1,11 @@
-import React from 'react'
+import { cn } from '@/lib/utils'
 
 import { Loader2 } from 'lucide-react'
 
-function Spinner({isText=false, width='5', height='5', text="Processing"}) {
+function Spinner({isText=false, text="Processing", className='', loaderClass=''}) {
   return (
-    <div className='flex items-center justify-center'>
-        <Loader2 className={`mr-2 h-${height} w-${width} animate-spin`} />
+    <div className={cn('flex items-center justify-center ', className)}>
+        <Loader2 className={cn('mr-2 animate-spin w-5 h-5 ', loaderClass)} />
         {
           isText && text
         }
