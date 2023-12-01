@@ -7,6 +7,7 @@ import { useToast } from '@/components/ui/use-toast'
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Parallax, Autoplay, Pagination } from 'swiper/modules';
+import parse from "html-react-parser";
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -41,6 +42,15 @@ function MainSlider() {
           })();
 
     }, []);
+
+    const filterImages = (html) => {
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const images = doc.querySelectorAll('img');
+        
+        if (images.length > 0) return true
+        
+        return false
+    };
 
   return (
     <>
@@ -100,6 +110,7 @@ function MainSlider() {
                 //TODO: autoplay not working
                 data.length > 0 &&
                 data.map((post) => (
+                    parse((post.truncated_content).trim()) != "" && !filterImages(parse((post.truncated_content).trim())) &&
                     <SwiperSlide key={post.uuid} className='px-20 py-12'>
                         <div className='w-full h-full flex flex-col items-start justify-center text-white'>
                             <BlurCardContainer
@@ -111,7 +122,7 @@ function MainSlider() {
                                 authorUUID={post.user?.uuid}
                                 authorImg={post.user?.profile_pic}
                                 title={post.title}
-                                description={post.truncated_content}                    
+                                description={parse(post.truncated_content)}                    
                                 tag={post.tags_parsed}
                             />
                         </div>

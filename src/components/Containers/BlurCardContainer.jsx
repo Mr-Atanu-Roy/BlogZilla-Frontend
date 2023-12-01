@@ -7,7 +7,6 @@ import { MoveRight, UserCircle, ThumbsUp, MessageCircle } from 'lucide-react'
 
 import handelDate from '@/utils/handelDate'
 
-import parse from "html-react-parser";
 
 function BlurCardContainer({
     className='',
@@ -28,7 +27,7 @@ function BlurCardContainer({
     
     return (
         
-        <div className={cn('w-[510px] h-[370px] bg-none backdrop-blur-md rounded-lg p-6 shadow-md ', className)}>
+        <div className={cn('w-[510px] h-[385px] bg-none backdrop-blur-md rounded-lg p-6 shadow-md ', className)}>
             <div className="flex items-center justify-between">
                 <div className="flex items-center justify-start" data-swiper-parallax="-300">
                     {
@@ -57,7 +56,7 @@ function BlurCardContainer({
             </div>
             <div data-swiper-parallax="-100">
                 <p className='text-base'>
-                    {parse(description)}
+                    {description}
                 </p>
                 <div className="flex items-end justify-between mt-5">
                     <Link to={`/post/${postUUID}`} className='max-w-fit text-sm font-medium flex items-center justify-center rounded-full px-3 border py-1'>
