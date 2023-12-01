@@ -26,10 +26,10 @@ function Header() {
       title: "Write",
       link: "post/write",
     },
-    {
-      title: "Pricing",
-      link: "pricing/",
-    }
+    // {
+    //   title: "Pricing",
+    //   link: "pricing/",
+    // }
    
   ];
 

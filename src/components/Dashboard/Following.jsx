@@ -8,7 +8,7 @@ import { useToast } from "@/components/ui/use-toast"
 
 function Following() {
     const { toast } = useToast()
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [data, setData] = useState([])
     const [page, setPage] = useState(1)
     const [hasMore, setHasMore] = useState(true)

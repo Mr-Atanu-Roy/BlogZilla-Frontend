@@ -16,7 +16,7 @@ import {
 
 function LatestBlog() {
     const {toast} = useToast()
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [posts, setPosts] = useState([])
     const [page, setPage] = useState(1)
     const [hasMore, setHasMore] = useState(true)
